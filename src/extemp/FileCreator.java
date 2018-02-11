@@ -15,6 +15,7 @@ import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import org.jsoup.nodes.Document;
 
@@ -58,6 +59,128 @@ public class FileCreator {
       "The Sydney Morning Herald", "Think Progress", "Time Magazine", "Toronto Star",
       "United Nations University", "Urban Institute", "Wall Street Journal", "Washington Examiner",
       "Washington Post", "Washington Times", "Wilson Center" };
+  /**
+   * HasMap of all sources information and the corresponding news outlet.
+   */
+  // Not complete for the following
+  //Copyright 2017
+  // ecfr epic
+  // Council on Foreign Relations
+  // Hoover Institution
+  // Manhattan Institute
+  private static final HashMap<String, String> map = new HashMap<String, String>() {
+    {
+      put("TheHill - The Hill News", "The Hill");
+      put("ThinkProgress - Medium", "Think Progress");
+      put("Americas", "The Economist");
+      put("Asia", "The Economist");
+      put("Britain", "The Economist");
+      put("United States", "The Economist");
+      put("Business and finance", "The Economist");
+      put("China", "The Economist");
+      put("Culture", "The Economist");
+      put("Europe", "The Economist");
+      put("Economics", "The Economist");
+      put("International", "The Economist");
+      put("Leaders", "The Economist");
+      put("Science and technology", "The Economist");
+      put("Middle East and Africa", "The Economist");
+      put("World", "Washington Post");
+      put("World – TIME", "Time Magazine");
+      put("TIME", "Time Magazine");
+      put("Tech – TIME", "Time Magazine");
+      put("Politics – TIME", "Time Magazine");
+      put("Newsfeed – TIME", "Time Magazine");
+      put("Business – TIME", "Time Magazine");
+      put("www.washingtontimes.com stories: News", "");
+      put("www.washingtontimes.com stories: Culture", "");
+      put("Politics", "Washington Times");
+      put("SPIEGEL ONLINE - International", "Der Spiegel International");
+      put("Sydney Morning Herald RSS News Headlines", "The Sydney Morning Herald");
+      put("The Aspen Institute", "The Aspen Institute");
+      put("The Diplomat", "The Diplomat");
+      put("Slate Articles", "Slate");
+      put("Open Society Foundations", "Open Society Foundations");
+      put("Pambazuka News - Pan-Africanism", "Pambazuka News");
+      put("Pambazuka News - Land &amp; Environment", "Pambazuka News");
+      put("Pambazuka News - ICT, Media &amp; Security", "Pambazuka News");
+      put("Pambazuka News - Human Security", "Pambazuka News");
+      put("Pambazuka News - Governance", "Pambazuka News");
+      put("Pambazuka News - Global South", "Pambazuka News");
+      put("Pambazuka News - Gender &amp; Minorities", "Pambazuka News");
+      put("Pambazuka News - Advocacy &amp; Campaigns", "Pambazuka News");
+      put("Peterson Institute Update", "Peterson Institute for International Economics");
+      put("Pew Research Center", "Pew Research Center");
+      put("Politifact.com Truth-O-Meter rulings from National", "PolitiFact");
+      put("Politifact.com stories from National", "PolitiFact");
+      put("Recent posts", "Center for Immigration Studies");
+      put("RSS", "International Monetary Fund");
+      put("RT", "Russian Times");
+      put("MoJo Articles | Mother Jones", "Mother Jones");
+      put("New America", "New America");
+      put("New Republic", "New Republic");
+      put("Independent Institute Articles", "Independent Institute");
+      put("Brookings: Up Front", "The Brookings Institute");
+      put("Latest From Brookings", "The Brookings Institute");
+      put("Latest From the Wilson Center", "Wilson Center");
+      put("All", "IRIN");
+      put("All Research", "Belfer Center");
+      put("Bipartisan Policy Center", "Bipartisan Policy Center");
+      put("Cato Recent Op-eds", "Cato Institute");
+      put("Center on Budget: Comprehensive News Feed", "Center on Budget and Policy Priorities");
+      put("Copyright 2008", "Real Clear Politics");
+      put("Defense One - All Content", "Defense One");
+      put("Economic Policy Institute", "Economic Policy Institute");
+      put("Foreign Policy", "Foreign Policy");
+      put("Foreign Policy In FocusForeign Policy In Focus", "Foreign Policy in Focus");
+      put("Lowy Institute", "Freedom House");
+      put("Gallup.Com", "Gallup");
+      put("© 1995 - 2017 The Jerusalem Post. All rights reserved.", "The Jerusalem Post");
+      put("© Copyright The Financial Times Ltd 2017. &quot;FT&quot; and &quot;Financial Times&quot; are trademarks of the Financial Times. See http://www.ft.com/servicestools/help/terms#legal1 for the terms and conditions of reuse.",
+          "Financial Times");
+      put("©2017 Los Angeles Times", "LA Times");
+      put("Â© 2015 Aljazeera Network", "Al Jazeera");
+      put("All rights reserved. Users may download and print extracts of content from this website for their own personal and non-commercial use only. Republication or redistribution of Reuters content, including by framing or similar means, is expressly prohibited without the prior written consent of Reuters. Reuters and the Reuters sphere logo are registered trademarks or trademarks of the Reuters group of companies around the world. © Reuters 2017",
+          "Reuters");
+      put("AllAfrica News: Actualités", "All Africa");
+      put("Christian Science Monitor | All Stories", "Christian Science Monitor");
+      put("copyright  © 2017 Dow Jones &amp; Company, Inc.", "Wall Street Journal");
+      put("Copyright (c) 2017 Turner Broadcasting System, Inc. All Rights Reserved.", "CNN");
+      put("Copyright 2017  The New York Times Company", "The New York Times");
+      put("Copyright 2017 BLOOMBERG L.P. ALL RIGHTS RESERVED", "Bloomberg");
+      put("Copyright 2017 by The Atlantic Monthly Group. All Rights Reserved.", "The Atlantic");
+      put("Copyright 2017 NPR - For Personal Use Only", "National Public Radio");
+      put("Copyright 2017, MercoPress.", "Merco Press");
+      put("Copyright Toronto Star 1996-2013 , http://www.thestar.com/terms", "Toronto Star");
+      put("Copyright: (C) British Broadcasting Corporation, see http://news.bbc.co.uk/2/hi/help/rss/4498287.stm for terms and conditions of reuse.",
+          "BBC");
+      put("Copyright2017 The Associated Press. All rights reserved. This material may not be published, broadcast, rewritten or redistributed",
+          "Associated Press");
+      put("FOX News", "Fox News");
+      put("Copyright 2017 FOX News Channel", "Fox News");
+      put("Guardian News and Media Limited or its affiliated companies. All rights reserved. 2017",
+          "The Guardian");
+      put("Scientific American, a Division of Nature America, Inc.", "Scientific American");
+      put("South China Morning Post - News feed", "South China Morning Post");
+      put("South China Morning Post - Hong Kong feed", "South China Morning Post");
+      put("South China Morning Post - China feed", "South China Morning Post");
+      put("South China Morning Post - World feed", "South China Morning Post");
+      put("South China Morning Post - Asia feed", "South China Morning Post");
+      put("The Huffington Post | Full News Feed", "Huffington Post");
+      put("Carnegie Endowment for International Peace -\r\n" + "Carnegie Publications",
+          "The Carnegie Endowment");
+      put("Center for American ProgressCenter for American Progress", "American Progress");
+      put("Copyright (c) 2017, The RAND Corporation", "Rand Corporation");
+      put("Copyright 2017 by the Council on Foreign Relations. All Rights Reserved.",
+          "Council on Foreign Relations");
+      put("Mises Institute", "Mises Institute");
+      put("News – United Nations University", "United Nations University");
+      put("The Henry J. Kaiser Family Foundation", "Kaiser Family Foundation");
+      put("Polls and Surveys about Health Policy from the Kaiser Family Foundation",
+          "Kaiser Family Foundation");
+      put("Urban Center", "Urban Center");
+    }
+  };
 
   /**
    * Creates a directory of all the files, an index for the articles, and a
@@ -126,312 +249,10 @@ public class FileCreator {
       final ArrayList<String> headerLines = new ArrayList<String>();
       final ArrayList<String> footerLines = new ArrayList<String>();
       String sourceName;
-      // The Hill
-      if ("TheHill - The Hill News".equals(sourceListName)) {
-        sourceName = "The Hill";
-      }
-      // Think Progress
-      else if ("ThinkProgress - Medium".equals(sourceListName)) {
-        sourceName = "Think Progress";
-      }
-      // The Economist
-      else if ("Americas".equals(sourceListName) || "Asia".equals(sourceListName)
-          || "Britain".equals(sourceListName) || "United States".equals(sourceListName)
-          || "Business and finance".equals(sourceListName) || "China".equals(sourceListName)
-          || "Culture".equals(sourceListName) || "Europe".equals(sourceListName)
-          || "Economics".equals(sourceListName) || "International".equals(sourceListName)
-          || "Leaders".equals(sourceListName) || "Science and technology".equals(sourceListName)
-          || "Middle East and Africa".equals(sourceListName)) {
-        sourceName = "The Economist";
-      }
-      // Washington Post
-      else if ("World".equals(sourceListName)) {
-        sourceName = "Washington Post";
-        lines.add(doc.select("div.row.text.font-accent.size-1x-small.color-darker-gray").text());
-        lines.add(doc.select("div.pb-author-bio").text());
-      }
-      // Time Magazine
-      else if ("World – TIME".equals(sourceListName) || "TIME".equals(sourceListName)
-          || "Tech – TIME".equals(sourceListName) || "Politics – TIME".equals(sourceListName)
-          || "Newsfeed – TIME".equals(sourceListName) || "Business – TIME".equals(sourceListName)) {
-        sourceName = "Time Magazine";
-        lines.add(doc.select("div.row.text.font-accent.size-1x-small.color-darker-gray").text());
-        lines.add(doc.select("a.text.font-accent.color-brand.size-1x-small._1HynphR0").text());
-      }
-      // Washington Times
-      else if ("www.washingtontimes.com stories: News".equals(sourceListName)
-          || "www.washingtontimes.com stories: Culture".equals(sourceListName)
-          || "Politics".equals(sourceListName)) {
-        sourceName = "Washington Times";
-        // lines.add(doc.select("span.source").text());
-        // lines.add("");
-        // lines.add(doc.select("div.storyareawrapper").text());
-      }
-      // Der Spiegel International
-      else if ("SPIEGEL ONLINE - International".equals(sourceListName)) {
-        sourceName = "Der Spiegel International";
-      }
-      // The Sydney Morning Herald
-      else if ("Sydney Morning Herald RSS News Headlines".equals(sourceListName)) {
-        sourceName = "The Sydney Morning Herald";
-      }
-      // The Aspen Institute
-      else if ("The Aspen Institute".equals(sourceListName)) {
-        sourceName = "The Aspen Institute";
-      }
-      // The Diplomat
-      else if ("The Diplomat".equals(sourceListName)) {
-        sourceName = "The Diplomat";
-      }
-      // Slate
-      else if ("Slate Articles".equals(sourceListName)) {
-        sourceName = "Slate";
-      }
-      // Open Society Foundations
-      else if ("Open Society Foundations".equals(sourceListName)) {
-        sourceName = "Open Society Foundations";
-      }
-      // Pambazuka News
-      else if ("Pambazuka News - Pan-Africanism".equals(sourceListName)
-          || "Pambazuka News - Land &amp; Environment".equals(sourceListName)
-          || "Pambazuka News - ICT, Media &amp; Security".equals(sourceListName)
-          || "Pambazuka News - Human Security".equals(sourceListName)
-          || "Pambazuka News - Governance".equals(sourceListName)
-          || "Pambazuka News - Global South".equals(sourceListName)
-          || "Pambazuka News - Gender &amp; Minorities".equals(sourceListName)
-          || "Pambazuka News - Advocacy &amp; Campaigns".equals(sourceListName)) {
-        sourceName = "Pambazuka News";
-      }
-      // Peterson Institute for International Economics
-      else if ("Peterson Institute Update".equals(sourceListName)) {
-        sourceName = "Peterson Institute for International Economics";
-      }
-      // Pew Research Center
-      else if ("Pew Research Center".equals(sourceListName)) {
-        sourceName = "Pew Research Center";
-      }
-      // PolitiFact
-      else if ("Politifact.com Truth-O-Meter rulings from National".equals(sourceListName)
-          || "Politifact.com stories from National".equals(sourceListName)) {
-        sourceName = "PolitiFact";
-      }
-      // Center for Immigration Studies
-      else if ("Recent posts".equals(sourceListName)) {
-        sourceName = "Center for Immigration Studies";
-      }
-      // International Monetary Fund
-      else if ("RSS".equals(sourceListName)) {
-        sourceName = "International Monetary Fund";
-      }
-      // Russian Times
-      else if ("RT".equals(sourceListName)) {
-        sourceName = "Russian Times";
-      }
-      // Mother Jones
-      else if ("MoJo Articles | Mother Jones".equals(sourceListName)) {
-        sourceName = "Mother Jones";
-      }
-      // New America
-      else if ("New America".equals(sourceListName)) {
-        sourceName = "New America";
-      }
-      // New Republic
-      else if ("New Republic".equals(sourceListName)) {
-        sourceName = "New Republic";
-      }
-      // Independent Institute
-      else if ("Independent Institute Articles".equals(sourceListName)) {
-        sourceName = "Independent Institute";
-      }
-      // The Brookings Institute
-      else if ("Brookings: Up Front".equals(sourceListName)
-          || "Latest From Brookings".equals(sourceListName)) {
-        sourceName = "The Brookings Institute";
-      }
-      // Wilson Center
-      else if ("Latest From the Wilson Center".equals(sourceListName)) {
-        sourceName = "Wilson Center";
-      }
-      // IRIN
-      else if ("All".equals(sourceListName)) {
-        sourceName = "IRIN";
-      }
-      // Belfer Center
-      else if ("All Research".equals(sourceListName)) {
-        sourceName = "Belfer Center";
-      }
-      // Bipartisan Policy Center
-      else if ("Bipartisan Policy Center".equals(sourceListName)) {
-        sourceName = "Bipartisan Policy Center";
-      }
-      // Cato Institute
-      else if ("Cato Recent Op-eds".equals(sourceListName)) {
-        sourceName = "Cato Institute";
-      }
-      // Center on Budget and Policy Priorities
-      else if ("Center on Budget: Comprehensive News Feed".equals(sourceListName)) {
-        sourceName = "Center on Budget and Policy Priorities";
-      }
-      // Real Clear Politics
-      else if ("Copyright 2008".equals(sourceListName)) {
-        sourceName = "Real Clear Politics";
-      }
-      // Defense One
-      else if ("Defense One - All Content".equals(sourceListName)) {
-        sourceName = "Defense One";
-      }
-      // Economic Policy Institute
-      else if ("Economic Policy Institute".equals(sourceListName)) {
-        sourceName = "Economic Policy Institute";
-      }
-      // Foreign Policy
-      else if ("Foreign Policy".equals(sourceListName)) {
-        sourceName = "Foreign Policy";
-      }
-      // Foreign Policy in Focus
-      else if ("Foreign Policy In FocusForeign Policy In Focus".equals(sourceListName)) {
-        sourceName = "Foreign Policy in Focus";
-      }
-      // Lowy Institute
-      else if ("Lowy Institute".equals(sourceListName)) {
-        sourceName = "Lowy Institute";
-      }
-      // Freedom House
-      else if ("Freedom House".equals(sourceListName)) {
-        sourceName = "Freedom House";
-      }
-      // Gallup
-      else if ("Gallup.Com".equals(sourceListName)) {
-        sourceName = "Gallup";
-      }
-      // The Jerusalem Post
-      else if (sourceListName.contains("The Jerusalem Post. All rights ")) {
-        sourceName = "The Jerusalem Post";
-      }
-      // Financial Times
-      else if (sourceListName.contains("Copyright The Financial Times Ltd ")) {
-        sourceName = "Financial Times";
-      }
-      // LA Times
-      else if (sourceListName.contains("Los Angeles Times")) {
-        sourceName = "LA Times";
-      }
-      // Al Jazeera
-      else if (sourceListName.contains("Aljazeera Network")) {
-        sourceName = "Al Jazeera";
-      }
-      // Reuters
-      else if (sourceListName.contains("Reuters")) {
-        sourceName = "Reuters";
-      }
-      // All Africa
-      else if (sourceListName.contains("AllAfrica News:")) {
-        sourceName = "All Africa";
-      }
-      // Carnegie Endowment for International Peace
-      else if (sourceListName.contains("Carnegie Endowment for International Peace")) {
-        sourceName = "The Carnegie Endowment";
-      }
-      // American Progress
-      else if (sourceListName.contains("Center for American ProgressCenter ")) {
-        sourceName = "American Progress";
-      }
-      // Christian Science Monitor
-      else if (sourceListName.contains("Christian Science Monitor ")) {
-        sourceName = "Christian Science Monitor";
-      }
-      // Wall Street Journal
-      else if (sourceListName.contains("Dow Jones &amp; Company, Inc.")) {
-        sourceName = "Wall Street Journal";
-      }
-      // CNN
-      else if (sourceListName.contains("Turner Broadcasting System, Inc")
-          || sourceListName.contains("Cable News Network LP,")) {
-        sourceName = "CNN";
-      }
-      // Rand Corporation
-      else if (sourceListName.contains("The RAND Corporation")) {
-        sourceName = "Rand Corporation";
-      }
-      // Copyright 2017
-      // ecfr epic
 
-      // The New York Times
-      else if (sourceListName.contains("The New York Times Company")) {
-        sourceName = "The New York Times";
-      }
-      // Bloomberg
-      else if (sourceListName.contains("BLOOMBERG L.P. ALL RIGHTS RESERVED")) {
-        sourceName = "Bloomberg";
-      }
-      // The Atlantic
-      else if (sourceListName.contains("by The Atlantic Monthly Group.")) {
-        sourceName = "The Atlantic";
-      }
-      // Council on Foreign Relations
-      else if (sourceListName.contains("by the Council on Foreign Relations")) {
-        sourceName = "Council on Foreign Relations";
-      }
-      // National Public Radio
-      else if (sourceListName.contains("NPR - For Personal Use Only")) {
-        sourceName = "National Public Radio";
-      }
-      // Merco Press
-      else if (sourceListName.contains("MercoPress.")) {
-        sourceName = "Merco Press";
-      }
-      // Toronto Star
-      else if (sourceListName.contains("Copyright Toronto Star")) {
-        sourceName = "Toronto Star";
-      }
-      // BBC
-      else if (sourceListName.contains("Copyright: (C) British Broadcasting Corporation, ")) {
-        sourceName = "BBC";
-      }
-      // Associated Press
-      else if (sourceListName.contains("The Associated Press.")) {
-        sourceName = "Associated Press";
-      }
-      // Fox News
-      else if (sourceListName.contains("FOX News")) {
-        sourceName = "Fox News";
-      }
-      // The Guardian
-      else if (sourceListName.contains("Guardian News and Media Limited or its affiliated")) {
-        sourceName = "The Guardian";
-      }
-      // Hoover Institution
+      sourceName = map.get(sourceListName);
 
-      // Mises Institute
-      else if (sourceListName.contains("Mises Institute")) {
-        sourceName = "Mises Institute";
-      }
-      // Manhattan Institute
-
-      // United Nations University
-      else if (sourceListName.contains("News – United Nations University")) {
-        sourceName = "United Nations University";
-      }
-      // Scientific American
-      else if (sourceListName.contains("Scientific American, a Division of Nature America,")) {
-        sourceName = "Scientific American";
-      }
-      // South China Morning Post
-      else if (sourceListName.contains("South China Morning Post")) {
-        sourceName = "South China Morning Post";
-      }
-      // The Kaiser Family Foundation
-      else if (sourceListName.contains("Kaiser Family Foundation")) {
-        sourceName = "Kaiser Family Foundation";
-      }
-      // The Huffington Post
-      else if (sourceListName.contains("The Huffington Post | Full News Feed")) {
-        sourceName = "Huffington Post";
-      }
-      // Urban Center
-      else if (sourceListName.contains("Urban Center")) {
-        sourceName = "Urban Center";
-      } else {
+      if (sourceName == null) {
         sourceName = "";
         try (FileWriter fileWrite = new FileWriter("articles/noIfElse.txt", true);
             BufferedWriter buffRead = new BufferedWriter(fileWrite);
