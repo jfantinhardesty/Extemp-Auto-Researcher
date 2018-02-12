@@ -6,14 +6,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JTextArea;
 
-
 /**
  * Database Connector class.
+ * 
  * @author pjlak
  */
 public class DatabaseConnector {
@@ -24,7 +24,8 @@ public class DatabaseConnector {
    *          a JTextArea to display information to the user.
    * @return a list of UrlInfo.
    */
-  public static List<UrlInfo> connectDatabase(final JTextArea textArea, Hashtable<String, String> login) {
+  public static List<UrlInfo> connectDatabase(final JTextArea textArea,
+      final Map<String, String> login) {
     final List<UrlInfo> urlClass = new ArrayList<UrlInfo>();
     final String timestamp = "2018-02-5";
 

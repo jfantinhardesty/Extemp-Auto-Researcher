@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.jsoup.nodes.Document;
 
@@ -63,124 +64,135 @@ public class FileCreator {
    * HasMap of all sources information and the corresponding news outlet.
    */
   // Not complete for the following
-  //Copyright 2017
+  // Copyright 2017
   // ecfr epic
   // Council on Foreign Relations
   // Hoover Institution
   // Manhattan Institute
-  private static final HashMap<String, String> map = new HashMap<String, String>() {
-    {
-      put("TheHill - The Hill News", "The Hill");
-      put("ThinkProgress - Medium", "Think Progress");
-      put("Americas", "The Economist");
-      put("Asia", "The Economist");
-      put("Britain", "The Economist");
-      put("United States", "The Economist");
-      put("Business and finance", "The Economist");
-      put("China", "The Economist");
-      put("Culture", "The Economist");
-      put("Europe", "The Economist");
-      put("Economics", "The Economist");
-      put("International", "The Economist");
-      put("Leaders", "The Economist");
-      put("Science and technology", "The Economist");
-      put("Middle East and Africa", "The Economist");
-      put("World", "Washington Post");
-      put("World – TIME", "Time Magazine");
-      put("TIME", "Time Magazine");
-      put("Tech – TIME", "Time Magazine");
-      put("Politics – TIME", "Time Magazine");
-      put("Newsfeed – TIME", "Time Magazine");
-      put("Business – TIME", "Time Magazine");
-      put("www.washingtontimes.com stories: News", "");
-      put("www.washingtontimes.com stories: Culture", "");
-      put("Politics", "Washington Times");
-      put("SPIEGEL ONLINE - International", "Der Spiegel International");
-      put("Sydney Morning Herald RSS News Headlines", "The Sydney Morning Herald");
-      put("The Aspen Institute", "The Aspen Institute");
-      put("The Diplomat", "The Diplomat");
-      put("Slate Articles", "Slate");
-      put("Open Society Foundations", "Open Society Foundations");
-      put("Pambazuka News - Pan-Africanism", "Pambazuka News");
-      put("Pambazuka News - Land &amp; Environment", "Pambazuka News");
-      put("Pambazuka News - ICT, Media &amp; Security", "Pambazuka News");
-      put("Pambazuka News - Human Security", "Pambazuka News");
-      put("Pambazuka News - Governance", "Pambazuka News");
-      put("Pambazuka News - Global South", "Pambazuka News");
-      put("Pambazuka News - Gender &amp; Minorities", "Pambazuka News");
-      put("Pambazuka News - Advocacy &amp; Campaigns", "Pambazuka News");
-      put("Peterson Institute Update", "Peterson Institute for International Economics");
-      put("Pew Research Center", "Pew Research Center");
-      put("Politifact.com Truth-O-Meter rulings from National", "PolitiFact");
-      put("Politifact.com stories from National", "PolitiFact");
-      put("Recent posts", "Center for Immigration Studies");
-      put("RSS", "International Monetary Fund");
-      put("RT", "Russian Times");
-      put("MoJo Articles | Mother Jones", "Mother Jones");
-      put("New America", "New America");
-      put("New Republic", "New Republic");
-      put("Independent Institute Articles", "Independent Institute");
-      put("Brookings: Up Front", "The Brookings Institute");
-      put("Latest From Brookings", "The Brookings Institute");
-      put("Latest From the Wilson Center", "Wilson Center");
-      put("All", "IRIN");
-      put("All Research", "Belfer Center");
-      put("Bipartisan Policy Center", "Bipartisan Policy Center");
-      put("Cato Recent Op-eds", "Cato Institute");
-      put("Center on Budget: Comprehensive News Feed", "Center on Budget and Policy Priorities");
-      put("Copyright 2008", "Real Clear Politics");
-      put("Defense One - All Content", "Defense One");
-      put("Economic Policy Institute", "Economic Policy Institute");
-      put("Foreign Policy", "Foreign Policy");
-      put("Foreign Policy In FocusForeign Policy In Focus", "Foreign Policy in Focus");
-      put("Lowy Institute", "Freedom House");
-      put("Gallup.Com", "Gallup");
-      put("© 1995 - 2017 The Jerusalem Post. All rights reserved.", "The Jerusalem Post");
-      put("© Copyright The Financial Times Ltd 2017. &quot;FT&quot; and &quot;Financial Times&quot; are trademarks of the Financial Times. See http://www.ft.com/servicestools/help/terms#legal1 for the terms and conditions of reuse.",
-          "Financial Times");
-      put("©2017 Los Angeles Times", "LA Times");
-      put("Â© 2015 Aljazeera Network", "Al Jazeera");
-      put("All rights reserved. Users may download and print extracts of content from this website for their own personal and non-commercial use only. Republication or redistribution of Reuters content, including by framing or similar means, is expressly prohibited without the prior written consent of Reuters. Reuters and the Reuters sphere logo are registered trademarks or trademarks of the Reuters group of companies around the world. © Reuters 2017",
-          "Reuters");
-      put("AllAfrica News: Actualités", "All Africa");
-      put("Christian Science Monitor | All Stories", "Christian Science Monitor");
-      put("copyright  © 2017 Dow Jones &amp; Company, Inc.", "Wall Street Journal");
-      put("Copyright (c) 2017 Turner Broadcasting System, Inc. All Rights Reserved.", "CNN");
-      put("Copyright 2017  The New York Times Company", "The New York Times");
-      put("Copyright 2017 BLOOMBERG L.P. ALL RIGHTS RESERVED", "Bloomberg");
-      put("Copyright 2017 by The Atlantic Monthly Group. All Rights Reserved.", "The Atlantic");
-      put("Copyright 2017 NPR - For Personal Use Only", "National Public Radio");
-      put("Copyright 2017, MercoPress.", "Merco Press");
-      put("Copyright Toronto Star 1996-2013 , http://www.thestar.com/terms", "Toronto Star");
-      put("Copyright: (C) British Broadcasting Corporation, see http://news.bbc.co.uk/2/hi/help/rss/4498287.stm for terms and conditions of reuse.",
-          "BBC");
-      put("Copyright2017 The Associated Press. All rights reserved. This material may not be published, broadcast, rewritten or redistributed",
-          "Associated Press");
-      put("FOX News", "Fox News");
-      put("Copyright 2017 FOX News Channel", "Fox News");
-      put("Guardian News and Media Limited or its affiliated companies. All rights reserved. 2017",
-          "The Guardian");
-      put("Scientific American, a Division of Nature America, Inc.", "Scientific American");
-      put("South China Morning Post - News feed", "South China Morning Post");
-      put("South China Morning Post - Hong Kong feed", "South China Morning Post");
-      put("South China Morning Post - China feed", "South China Morning Post");
-      put("South China Morning Post - World feed", "South China Morning Post");
-      put("South China Morning Post - Asia feed", "South China Morning Post");
-      put("The Huffington Post | Full News Feed", "Huffington Post");
-      put("Carnegie Endowment for International Peace -\r\n" + "Carnegie Publications",
-          "The Carnegie Endowment");
-      put("Center for American ProgressCenter for American Progress", "American Progress");
-      put("Copyright (c) 2017, The RAND Corporation", "Rand Corporation");
-      put("Copyright 2017 by the Council on Foreign Relations. All Rights Reserved.",
-          "Council on Foreign Relations");
-      put("Mises Institute", "Mises Institute");
-      put("News – United Nations University", "United Nations University");
-      put("The Henry J. Kaiser Family Foundation", "Kaiser Family Foundation");
-      put("Polls and Surveys about Health Policy from the Kaiser Family Foundation",
-          "Kaiser Family Foundation");
-      put("Urban Center", "Urban Center");
-    }
-  };
+  private static final Map<String, String> SOURCEMAP = createSourceMap();
+
+  private static Map<String, String> createSourceMap() {
+    final Map<String, String> sourceMap = new HashMap<String, String>();
+    sourceMap.put("TheHill - The Hill News", "The Hill");
+    sourceMap.put("ThinkProgress - Medium", "Think Progress");
+    sourceMap.put("Americas", "The Economist");
+    sourceMap.put("Asia", "The Economist");
+    sourceMap.put("Britain", "The Economist");
+    sourceMap.put("United States", "The Economist");
+    sourceMap.put("Business and finance", "The Economist");
+    sourceMap.put("China", "The Economist");
+    sourceMap.put("Culture", "The Economist");
+    sourceMap.put("Europe", "The Economist");
+    sourceMap.put("Economics", "The Economist");
+    sourceMap.put("International", "The Economist");
+    sourceMap.put("Leaders", "The Economist");
+    sourceMap.put("Science and technology", "The Economist");
+    sourceMap.put("Middle East and Africa", "The Economist");
+    sourceMap.put("World", "Washington Post");
+    sourceMap.put("World – TIME", "Time Magazine");
+    sourceMap.put("TIME", "Time Magazine");
+    sourceMap.put("Tech – TIME", "Time Magazine");
+    sourceMap.put("Politics – TIME", "Time Magazine");
+    sourceMap.put("Newsfeed – TIME", "Time Magazine");
+    sourceMap.put("Business – TIME", "Time Magazine");
+    sourceMap.put("www.washingtontimes.com stories: News", "");
+    sourceMap.put("www.washingtontimes.com stories: Culture", "");
+    sourceMap.put("Politics", "Washington Times");
+    sourceMap.put("SPIEGEL ONLINE - International", "Der Spiegel International");
+    sourceMap.put("Sydney Morning Herald RSS News Headlines", "The Sydney Morning Herald");
+    sourceMap.put("The Aspen Institute", "The Aspen Institute");
+    sourceMap.put("The Diplomat", "The Diplomat");
+    sourceMap.put("Slate Articles", "Slate");
+    sourceMap.put("Open Society Foundations", "Open Society Foundations");
+    sourceMap.put("Pambazuka News - Pan-Africanism", "Pambazuka News");
+    sourceMap.put("Pambazuka News - Land &amp; Environment", "Pambazuka News");
+    sourceMap.put("Pambazuka News - ICT, Media &amp; Security", "Pambazuka News");
+    sourceMap.put("Pambazuka News - Human Security", "Pambazuka News");
+    sourceMap.put("Pambazuka News - Governance", "Pambazuka News");
+    sourceMap.put("Pambazuka News - Global South", "Pambazuka News");
+    sourceMap.put("Pambazuka News - Gender &amp; Minorities", "Pambazuka News");
+    sourceMap.put("Pambazuka News - Advocacy &amp; Campaigns", "Pambazuka News");
+    sourceMap.put("Peterson Institute Update", "Peterson Institute for International Economics");
+    sourceMap.put("Pew Research Center", "Pew Research Center");
+    sourceMap.put("Politifact.com Truth-O-Meter rulings from National", "PolitiFact");
+    sourceMap.put("Politifact.com stories from National", "PolitiFact");
+    sourceMap.put("Recent posts", "Center for Immigration Studies");
+    sourceMap.put("RSS", "International Monetary Fund");
+    sourceMap.put("RT", "Russian Times");
+    sourceMap.put("MoJo Articles | Mother Jones", "Mother Jones");
+    sourceMap.put("New America", "New America");
+    sourceMap.put("New Republic", "New Republic");
+    sourceMap.put("Independent Institute Articles", "Independent Institute");
+    sourceMap.put("Brookings: Up Front", "The Brookings Institute");
+    sourceMap.put("Latest From Brookings", "The Brookings Institute");
+    sourceMap.put("Latest From the Wilson Center", "Wilson Center");
+    sourceMap.put("All", "IRIN");
+    sourceMap.put("All Research", "Belfer Center");
+    sourceMap.put("Bipartisan Policy Center", "Bipartisan Policy Center");
+    sourceMap.put("Cato Recent Op-eds", "Cato Institute");
+    sourceMap.put("Center on Budget: Comprehensive News Feed",
+        "Center on Budget and Policy Priorities");
+    sourceMap.put("Copyright 2008", "Real Clear Politics");
+    sourceMap.put("Defense One - All Content", "Defense One");
+    sourceMap.put("Economic Policy Institute", "Economic Policy Institute");
+    sourceMap.put("Foreign Policy", "Foreign Policy");
+    sourceMap.put("Foreign Policy In FocusForeign Policy In Focus", "Foreign Policy in Focus");
+    sourceMap.put("Lowy Institute", "Freedom House");
+    sourceMap.put("Gallup.Com", "Gallup");
+    sourceMap.put("© 1995 - 2017 The Jerusalem Post. All rights reserved.", "The Jerusalem Post");
+    sourceMap.put(
+        "© Copyright The Financial Times Ltd 2017. &quot;FT&quot; and &quot;Financial Times&quot; are trademarks of the Financial Times. See http://www.ft.com/servicestools/help/terms#legal1 for the terms and conditions of reuse.",
+        "Financial Times");
+    sourceMap.put("©2017 Los Angeles Times", "LA Times");
+    sourceMap.put("Â© 2015 Aljazeera Network", "Al Jazeera");
+    sourceMap.put(
+        "All rights reserved. Users may download and print extracts of content from this website for their own personal and non-commercial use only. Republication or redistribution of Reuters content, including by framing or similar means, is expressly prohibited without the prior written consent of Reuters. Reuters and the Reuters sphere logo are registered trademarks or trademarks of the Reuters group of companies around the world. © Reuters 2017",
+        "Reuters");
+    sourceMap.put("AllAfrica News: Actualités", "All Africa");
+    sourceMap.put("Christian Science Monitor | All Stories", "Christian Science Monitor");
+    sourceMap.put("copyright  © 2017 Dow Jones &amp; Company, Inc.", "Wall Street Journal");
+    sourceMap.put("Copyright (c) 2017 Turner Broadcasting System, Inc. All Rights Reserved.",
+        "CNN");
+    sourceMap.put("Copyright 2017  The New York Times Company", "The New York Times");
+    sourceMap.put("Copyright 2017 BLOOMBERG L.P. ALL RIGHTS RESERVED", "Bloomberg");
+    sourceMap.put("Copyright 2017 by The Atlantic Monthly Group. All Rights Reserved.",
+        "The Atlantic");
+    sourceMap.put("Copyright 2017 NPR - For Personal Use Only", "National Public Radio");
+    sourceMap.put("Copyright 2017, MercoPress.", "Merco Press");
+    sourceMap.put("Copyright Toronto Star 1996-2013 , http://www.thestar.com/terms",
+        "Toronto Star");
+    sourceMap.put(
+        "Copyright: (C) British Broadcasting Corporation, see http://news.bbc.co.uk/2/hi/help/rss/4498287.stm for terms and conditions of reuse.",
+        "BBC");
+    sourceMap.put(
+        "Copyright2017 The Associated Press. All rights reserved. This material may not be published, broadcast, rewritten or redistributed",
+        "Associated Press");
+    sourceMap.put("FOX News", "Fox News");
+    sourceMap.put("Copyright 2017 FOX News Channel", "Fox News");
+    sourceMap.put(
+        "Guardian News and Media Limited or its affiliated companies. All rights reserved. 2017",
+        "The Guardian");
+    sourceMap.put("Scientific American, a Division of Nature America, Inc.", "Scientific American");
+    sourceMap.put("South China Morning Post - News feed", "South China Morning Post");
+    sourceMap.put("South China Morning Post - Hong Kong feed", "South China Morning Post");
+    sourceMap.put("South China Morning Post - China feed", "South China Morning Post");
+    sourceMap.put("South China Morning Post - World feed", "South China Morning Post");
+    sourceMap.put("South China Morning Post - Asia feed", "South China Morning Post");
+    sourceMap.put("The Huffington Post | Full News Feed", "Huffington Post");
+    sourceMap.put("Carnegie Endowment for International Peace -\r\n" + "Carnegie Publications",
+        "The Carnegie Endowment");
+    sourceMap.put("Center for American ProgressCenter for American Progress", "American Progress");
+    sourceMap.put("Copyright (c) 2017, The RAND Corporation", "Rand Corporation");
+    sourceMap.put("Copyright 2017 by the Council on Foreign Relations. All Rights Reserved.",
+        "Council on Foreign Relations");
+    sourceMap.put("Mises Institute", "Mises Institute");
+    sourceMap.put("News – United Nations University", "United Nations University");
+    sourceMap.put("The Henry J. Kaiser Family Foundation", "Kaiser Family Foundation");
+    sourceMap.put("Polls and Surveys about Health Policy from the Kaiser Family Foundation",
+        "Kaiser Family Foundation");
+    sourceMap.put("Urban Center", "Urban Center");
+    return sourceMap;
+  }
 
   /**
    * Creates a directory of all the files, an index for the articles, and a
@@ -220,21 +232,21 @@ public class FileCreator {
    * Creates a text file to store a timestamp.
    */
   private static void createTimeStamp() {
-    String timestamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-    byte[] strToBytes = timestamp.getBytes();
+    final String timestamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+    final byte[] strToBytes = timestamp.getBytes();
     // new File("timestamp.txt");
     final Path file = Paths.get("timestamp.txt");
-    if (!Files.exists(file)) {
-      try {
-        Files.createFile(file);
-      } catch (IOException e) {
-        // TODO
-      }
-    } else {
+    if (Files.exists(file)) {
       try {
         Files.write(file, strToBytes);
       } catch (IOException e) {
         // TODO Auto-generated catch block
+      }
+    } else {
+      try {
+        Files.createFile(file);
+      } catch (IOException e) {
+        // TODO
       }
     }
   }
@@ -243,14 +255,15 @@ public class FileCreator {
    * Create a text file of the article.
    */
   public static boolean createFile(final Document doc, final String sourceListName,
-      final String titleListName, final String urlListName, boolean failure) {
+      final String titleListName, final String urlListName) {
+    boolean failure = false;
     if (doc != null) {
       final ArrayList<String> lines = new ArrayList<String>();
       final ArrayList<String> headerLines = new ArrayList<String>();
       final ArrayList<String> footerLines = new ArrayList<String>();
       String sourceName;
 
-      sourceName = map.get(sourceListName);
+      sourceName = SOURCEMAP.get(sourceListName);
 
       if (sourceName == null) {
         sourceName = "";

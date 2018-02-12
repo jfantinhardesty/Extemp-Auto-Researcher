@@ -83,8 +83,9 @@ public class ThreadWorker implements Runnable {
     try {
       final URL url = new URL(urlListName);
       final Document doc = Jsoup.parse(url, 3500);
-      failure = FileCreator.createFile(doc, sourceListName, titleListName, urlListName,
-          isFailure());
+      if (!isFailure()) {
+        failure = FileCreator.createFile(doc, sourceListName, titleListName, urlListName);
+      }
     } catch (IOException e) {
       // e.printStackTrace();
       // System.out.println(e);

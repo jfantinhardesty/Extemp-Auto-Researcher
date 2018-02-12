@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -50,7 +51,7 @@ public class MainEngine {
    */
   public void startDownload(final JTextArea textArea) {
     // Create a list of UrlInfo from the mySQL database
-    Hashtable<String, String> login;
+    Map<String, String> login;
     login = login();
     final List<UrlInfo> urlClass = DatabaseConnector.connectDatabase(textArea, login);
 
@@ -89,24 +90,24 @@ public class MainEngine {
     textArea.update(textArea.getGraphics());
   }
   
-  public static Hashtable<String, String> login() {
-    JPanel panel = new JPanel(new BorderLayout(5, 5));
+  public static Map<String, String> login() {
+    final JPanel panel = new JPanel(new BorderLayout(5, 5));
 
-    JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
+    final JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
     label.add(new JLabel("E-Mail", SwingConstants.RIGHT));
     label.add(new JLabel("Password", SwingConstants.RIGHT));
     panel.add(label, BorderLayout.WEST);
 
-    JPanel controls = new JPanel(new GridLayout(0, 1, 2, 2));
-    JTextField username = new JTextField();
+    final JPanel controls = new JPanel(new GridLayout(0, 1, 2, 2));
+    final JTextField username = new JTextField();
     controls.add(username);
-    JPasswordField password = new JPasswordField();
+    final JPasswordField password = new JPasswordField();
     controls.add(password);
     panel.add(controls, BorderLayout.CENTER);
 
     JOptionPane.showMessageDialog(null, panel, "login", JOptionPane.QUESTION_MESSAGE);
 
-    Hashtable<String, String> logininformation = new Hashtable<String, String>();
+    final Map<String, String> logininformation = new Hashtable<String, String>();
     logininformation.put("user", username.getText());
     logininformation.put("password", new String(password.getPassword()));
     return logininformation;
