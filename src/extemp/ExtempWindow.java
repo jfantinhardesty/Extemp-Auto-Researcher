@@ -1,15 +1,15 @@
 package extemp;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.MenuItem;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -61,24 +61,29 @@ public class ExtempWindow {
     frame = new JFrame();
     frame.setBounds(100, 100, 779, 465);
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.getContentPane().setLayout(new BorderLayout(0, 0));
     frame.setVisible(true);
-
-    final JLabel label = new JLabel("");
-    frame.getContentPane().add(label);
+    frame.setLayout(new GridBagLayout());
 
     final JTextArea textArea = new JTextArea();
     textArea.setWrapStyleWord(true);
     textArea.setLineWrap(true);
     textArea.setEditable(false);
 
+    final GridBagConstraints gbc = new GridBagConstraints();
+
     final JScrollPane scrollPane = new JScrollPane(textArea);
     scrollPane.setViewportBorder(new LineBorder(new Color(0, 0, 0), 2, true));
-    frame.getContentPane().add(scrollPane);
+    gbc.weightx = 1;
+    gbc.weighty = 1;
+    gbc.fill = GridBagConstraints.BOTH;
+    gbc.anchor = GridBagConstraints.CENTER;
+    frame.add(scrollPane, gbc);
+
+    final FlowLayout flowLay = new FlowLayout(FlowLayout.LEFT);
 
     final JMenuBar menuBar = new JMenuBar();
+    menuBar.setLayout(flowLay);
     scrollPane.setColumnHeaderView(menuBar);
-    menuBar.setBounds(0, 0, 356, 27);
 
     final JMenu mnIndexArticles = new JMenu("Index Articles");
     menuBar.add(mnIndexArticles);
