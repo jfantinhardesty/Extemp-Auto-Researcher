@@ -144,8 +144,8 @@ public class MainEngine {
       final List<ThreadWorker> workers = new ArrayList<ThreadWorker>();
       startTime = System.currentTimeMillis();
       for (int i = 0; i < threadAmount; i++) {
-        workers.add(new ThreadWorker(urlClass.get(j + i).url, urlClass.get(j + i).title,
-            urlClass.get(j + i).source));
+        workers.add(new ThreadWorker(urlClass.get(j + i).getUrl(), urlClass.get(j + i).getTitle(),
+            urlClass.get(j + i).getSource()));
       }
 
       // We must force the main thread to wait for all the workers

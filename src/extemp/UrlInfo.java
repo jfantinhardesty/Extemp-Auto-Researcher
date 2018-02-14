@@ -7,15 +7,15 @@ public class UrlInfo {
   /**
    * A string that stores the url.
     */
-  public String url;
+  private String url;
   /**
    * A string that stores the name of the news source.
     */
-  public String source;
+  private String source;
   /**
    * A string that store the title of the article.
     */
-  public String title;
+  private String title;
   
   /**
    * Create a UrlInfo object which holds the url, title, and source of an article.\
@@ -24,9 +24,30 @@ public class UrlInfo {
    * @param title String
    * @param source String
     */
-  UrlInfo(final String url, final String title, final String source) {
+  public UrlInfo(final String url, final String title, final String source) {
     this.url = url;
     this.title = title;
     this.source = source;
+  }
+  
+  /**
+   * Returns the url.
+    */
+  public String getUrl() {
+    return url;
+  }
+  
+  /**
+   * Returns the source.
+    */
+  public String getSource() {
+    return source;
+  }
+  
+  /**
+   * Returns the title.
+    */
+  public String getTitle() {
+    return title;
   }
 }

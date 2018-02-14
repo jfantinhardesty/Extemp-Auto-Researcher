@@ -21,9 +21,9 @@ import java.util.Map;
 import org.jsoup.nodes.Document;
 
 /**
- * FileCreator.
+ * A Utility class FileCreator.
  */
-public class FileCreator {
+public final class FileCreator {
   /**
    * Name of the folder which will store every article.
    */
@@ -192,6 +192,11 @@ public class FileCreator {
         "Kaiser Family Foundation");
     sourceMap.put("Urban Center", "Urban Center");
     return sourceMap;
+  }
+  
+  // Private constructor because this is a utility class.
+  private FileCreator() {
+    //Does nothing
   }
 
   /**
