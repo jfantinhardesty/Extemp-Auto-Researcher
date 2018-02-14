@@ -3,6 +3,7 @@ package extemp;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
@@ -81,19 +83,19 @@ public class ExtempWindow {
     final JMenu mnIndexArticles = new JMenu("Index Articles");
     menuBar.add(mnIndexArticles);
 
-    final JButton btnPastWeek = new JButton("Past Week");
+    final JMenuItem btnPastWeek = new JMenuItem("Past Week");
     mnIndexArticles.add(btnPastWeek);
 
-    final JButton btnPastMonth = new JButton("Past Month");
+    final JMenuItem btnPastMonth = new JMenuItem("Past Month");
     mnIndexArticles.add(btnPastMonth);
 
-    final JButton btnPast3Months = new JButton("Past 3 Months");
+    final JMenuItem btnPast3Months = new JMenuItem("Past 3 Months");
     mnIndexArticles.add(btnPast3Months);
 
-    final JButton btnPast6Months = new JButton("Past 6 Months");
+    final JMenuItem btnPast6Months = new JMenuItem("Past 6 Months");
     mnIndexArticles.add(btnPast6Months);
 
-    final JButton btnSinceIndex = new JButton("Since Previous Index");
+    final JMenuItem btnSinceIndex = new JMenuItem("Since Previous Index");
     mnIndexArticles.add(btnSinceIndex);
 
     final JButton btnSearchArticles = new JButton("Search Articles");
@@ -110,8 +112,6 @@ public class ExtempWindow {
        * Start indexing articles.
        */
       public void actionPerformed(final ActionEvent e) {
-        btnSinceIndex.update(btnSinceIndex.getGraphics());
-        mnIndexArticles.update(mnIndexArticles.getGraphics());
         (new BackgroundTask(textArea)).execute();
       }
     });
