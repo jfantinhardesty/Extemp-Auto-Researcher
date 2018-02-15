@@ -18,8 +18,6 @@ import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.jsoup.nodes.Document;
-
 /**
  * A Utility class FileCreator.
  */
@@ -259,10 +257,10 @@ public final class FileCreator {
   /**
    * Create a text file of the article.
    */
-  public static boolean createFile(final Document doc, final String sourceListName,
+  public static boolean createFile(final String content, final String sourceListName,
       final String titleListName, final String urlListName) {
-    boolean failure= false;
-    if (doc != null) {
+    boolean failure = false;
+    if (content != null) {
       final ArrayList<String> lines = new ArrayList<String>();
       final ArrayList<String> headerLines = new ArrayList<String>();
       final ArrayList<String> footerLines = new ArrayList<String>();
@@ -286,7 +284,7 @@ public final class FileCreator {
       footerLines.add("");
       footerLines.add(urlListName);
       try {
-        lines.add(doc.select("p").prepend("\n\n").text());
+        lines.add(content);
         final Path file = Paths.get(baseFolder + "/" + sourceName + "/"
             + titleListName.replaceAll("[^a-zA-Z0-9_\\-\\.]", "") + ".txt");
         Files.createFile(file);

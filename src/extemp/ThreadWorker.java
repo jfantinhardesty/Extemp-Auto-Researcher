@@ -1,11 +1,13 @@
 package extemp;
 
+import de.l3s.boilerpipe.document.TextDocument;
+import de.l3s.boilerpipe.extractors.CommonExtractors;
+import de.l3s.boilerpipe.sax.BoilerpipeSAXInput;
+import de.l3s.boilerpipe.sax.HTMLDocument;
+import de.l3s.boilerpipe.sax.HTMLFetcher;
+
 import java.net.SocketTimeoutException;
 import java.net.URL;
-
-import org.jsoup.Jsoup;
-import org.jsoup.UncheckedIOException;
-import org.jsoup.nodes.Document;
 
 /**
  * Runs the threads.
@@ -83,12 +85,12 @@ public class ThreadWorker implements Runnable {
 
     try {
       final URL url = new URL(urlListName);
-      final Document doc = Jsoup.parse(url, 3500);
+      final HTMLDocument htmlDoc = HTMLFetcher.fetch(url);
+      final TextDocument doc = new BoilerpipeSAXInput(htmlDoc.toInputSource()).getTextDocument();
+      String content = CommonExtractors.ARTICLE_EXTRACTOR.getText(doc);
       if (!isFailure()) {
-        failure = FileCreator.createFile(doc, sourceListName, titleListName, urlListName);
+        failure = FileCreator.createFile(content, sourceListName, titleListName, urlListName);
       }
-    } catch (UncheckedIOException e) {
-      failure = true;
     } catch (SocketTimeoutException e) {
       failure = true;
     } catch (Exception e) {
