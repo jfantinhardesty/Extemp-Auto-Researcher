@@ -15,8 +15,8 @@ import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.jsoup.nodes.Document;
 
@@ -72,7 +72,7 @@ public final class FileCreator {
   private static final Map<String, String> SOURCEMAP = createSourceMap();
 
   private static Map<String, String> createSourceMap() {
-    final Map<String, String> sourceMap = new HashMap<String, String>();
+    final Map<String, String> sourceMap = new ConcurrentHashMap<String, String>();
     sourceMap.put("TheHill - The Hill News", "The Hill");
     sourceMap.put("ThinkProgress - Medium", "Think Progress");
     sourceMap.put("Americas", "The Economist");
@@ -210,7 +210,7 @@ public final class FileCreator {
   }
 
   /**
-   * Returns void. Creates a folder which will store folders for each news source
+   * Creates a folder which will store folders for each news source
    * that will store their corresponding articles.
    */
   private static void createDirectory() {
@@ -261,7 +261,7 @@ public final class FileCreator {
    */
   public static boolean createFile(final Document doc, final String sourceListName,
       final String titleListName, final String urlListName) {
-    boolean failure = false;
+    boolean failure= false;
     if (doc != null) {
       final ArrayList<String> lines = new ArrayList<String>();
       final ArrayList<String> headerLines = new ArrayList<String>();
@@ -277,7 +277,7 @@ public final class FileCreator {
             PrintWriter output = new PrintWriter(buffRead)) {
           output.println(urlListName);
         } catch (IOException e) {
-          // exception handling left as an exercise for the reader
+          // TODO
         }
       }
       headerLines.add(titleListName);

@@ -5,7 +5,7 @@
 	<classpathentry kind="lib" path="jars/miglayout15-swing.jar"/>
 	<classpathentry kind="lib" path="jars/jgoodies-forms-1.8.0.jar"/>
 	<classpathentry kind="lib" path="jars/guava-23.0.jar"/>
-	<classpathentry kind="lib" path="jars/jsoup.jar"/>
 	<classpathentry kind="lib" path="jars/mysql-connector-java-5.0.8-bin.jar"/>
+	<classpathentry kind="lib" path="D:/Pjlak Files/Documents/GitHub/Extemp-Auto-Researcher/jars/jsoup-1.11.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

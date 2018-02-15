@@ -58,7 +58,7 @@ public class ExtempWindow {
    * Initialize the contents of the frame.
    */
   private void initialize() {
-    frame = new JFrame();
+    frame = new JFrame("Extemp Auto Researcher");
     frame.setBounds(100, 100, 779, 465);
     frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     frame.setVisible(true);

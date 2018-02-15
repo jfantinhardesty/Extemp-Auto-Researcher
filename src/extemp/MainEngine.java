@@ -90,6 +90,9 @@ public class MainEngine {
     textArea.update(textArea.getGraphics());
   }
   
+  /**
+   * Creates a popup windows for the user to login to the MySQL database
+   */
   public static Map<String, String> login() {
     final JPanel panel = new JPanel(new BorderLayout(5, 5));
 
@@ -120,12 +123,8 @@ public class MainEngine {
    * <p>This method will run multiple threads which will each connect to a Url and
    * grab the text from the url and store that into a text file.
    *
-   * @param urlList
-   *          an ArrayList of urls
-   * @param titleList
-   *          an ArrayList of titles
-   * @param sourceList
-   *          an ArrayList of sources
+   * @param urlClass
+   *          a list of UrlInfor containing all article information
    * @param jTextArea
    *          a text area to display information
    * @return void

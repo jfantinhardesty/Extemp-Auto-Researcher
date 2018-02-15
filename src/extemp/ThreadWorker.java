@@ -1,9 +1,10 @@
 package extemp;
 
-import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 
 import org.jsoup.Jsoup;
+import org.jsoup.UncheckedIOException;
 import org.jsoup.nodes.Document;
 
 /**
@@ -86,15 +87,13 @@ public class ThreadWorker implements Runnable {
       if (!isFailure()) {
         failure = FileCreator.createFile(doc, sourceListName, titleListName, urlListName);
       }
-    } catch (IOException e) {
+    } catch (UncheckedIOException e) {
+      failure = true;
+    } catch (SocketTimeoutException e) {
+      failure = true;
+    } catch (Exception e) {
       // e.printStackTrace();
       // System.out.println(e);
-      failure = true;
-    } catch (NullPointerException e) {
-      // e.printStackTrace();
-      failure = true;
-    } catch (IllegalArgumentException e) {
-      // e.printStackTrace();
       failure = true;
     }
 

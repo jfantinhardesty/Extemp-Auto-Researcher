@@ -7,15 +7,15 @@ public class UrlInfo {
   /**
    * A string that stores the url.
     */
-  private String url;
+  private final String url;
   /**
    * A string that stores the name of the news source.
     */
-  private String source;
+  private final String source;
   /**
    * A string that store the title of the article.
     */
-  private String title;
+  private final String title;
   
   /**
    * Create a UrlInfo object which holds the url, title, and source of an article.\
