@@ -12,13 +12,19 @@ class BackgroundTask extends SwingWorker<String, Object> {
    * JTextArea to display information.
    */
   private final JTextArea textArea;
+  
+  /**
+   * Date string that keeps track of which button was pushed.
+   */
+  private final String date;
 
   /**
    * Creates the background task for the JTextArea.
    */
-  public BackgroundTask(final JTextArea textArea) {
+  public BackgroundTask(final JTextArea textArea, final String date) {
     super();
     this.textArea = textArea;
+    this.date = date;
   }
 
   /**
@@ -27,7 +33,7 @@ class BackgroundTask extends SwingWorker<String, Object> {
   @Override
   public String doInBackground() {
     final MainEngine indexPrevious = new MainEngine();
-    indexPrevious.startDownload(textArea);
+    indexPrevious.startDownload(textArea, date);
     return "done";
   }
 }

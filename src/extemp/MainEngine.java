@@ -49,11 +49,11 @@ public class MainEngine {
    * @see ArrayList
    * @see Connection
    */
-  public void startDownload(final JTextArea textArea) {
+  public void startDownload(final JTextArea textArea, final String date) {
     // Create a list of UrlInfo from the mySQL database
     Map<String, String> login;
     login = login();
-    final List<UrlInfo> urlClass = DatabaseConnector.connectDatabase(textArea, login);
+    final List<UrlInfo> urlClass = DatabaseConnector.connectDatabase(textArea, login, date);
 
     // Create files
     FileCreator.createFiles();
@@ -91,7 +91,7 @@ public class MainEngine {
   }
   
   /**
-   * Creates a popup windows for the user to login to the MySQL database
+   * Creates a popup windows for the user to login to the MySQL database.
    */
   public static Map<String, String> login() {
     final JPanel panel = new JPanel(new BorderLayout(5, 5));

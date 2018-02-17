@@ -111,13 +111,49 @@ public class ExtempWindow {
 
     final JButton btnHelp = new JButton("Help");
     menuBar.add(btnHelp);
+    
+    btnPastWeek.addActionListener(new ActionListener() {
+      /**
+       * Start indexing articles.
+       */
+      public void actionPerformed(final ActionEvent e) {
+        (new BackgroundTask(textArea, "Past Week")).execute();
+      }
+    });
+    
+    btnPastMonth.addActionListener(new ActionListener() {
+      /**
+       * Start indexing articles.
+       */
+      public void actionPerformed(final ActionEvent e) {
+        (new BackgroundTask(textArea, "Past Month")).execute();
+      }
+    });
+    
+    btnPast3Months.addActionListener(new ActionListener() {
+      /**
+       * Start indexing articles.
+       */
+      public void actionPerformed(final ActionEvent e) {
+        (new BackgroundTask(textArea, "Past 3 Months")).execute();
+      }
+    });
+    
+    btnPast6Months.addActionListener(new ActionListener() {
+      /**
+       * Start indexing articles.
+       */
+      public void actionPerformed(final ActionEvent e) {
+        (new BackgroundTask(textArea, "Past 6 Months")).execute();
+      }
+    });
 
     btnSinceIndex.addActionListener(new ActionListener() {
       /**
        * Start indexing articles.
        */
       public void actionPerformed(final ActionEvent e) {
-        (new BackgroundTask(textArea)).execute();
+        (new BackgroundTask(textArea, "Since Previous")).execute();
       }
     });
   }

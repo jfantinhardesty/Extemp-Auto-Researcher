@@ -1,10 +1,18 @@
 package extemp;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,9 +33,33 @@ public class DatabaseConnector {
    * @return a list of UrlInfo.
    */
   public static List<UrlInfo> connectDatabase(final JTextArea textArea,
-      final Map<String, String> login) {
+      final Map<String, String> login, final String date) {
     final List<UrlInfo> urlClass = new ArrayList<UrlInfo>();
-    final String timestamp = "2018-02-5";
+    
+    final LocalDate currentDate = LocalDate.now();
+    String timestamp = null;
+    if (date == "Past Week") {
+      timestamp = currentDate.minusDays(7).toString();
+    } else if (date == "Past Month") {
+      timestamp = currentDate.minusMonths(1).toString();
+    } else if (date == "Past 3 Months") {
+      timestamp = currentDate.minusMonths(3).toString();
+    } else if (date == "Past 6 Months") {
+      timestamp = currentDate.minusMonths(6).toString();
+    } else {
+      final Path file = Paths.get("timestamp.txt");
+      if (Files.exists(file)) {
+        FileWriter fileWrite;
+        try {
+          fileWrite = new FileWriter("timestamp.txt", true);
+          BufferedWriter buffRead = new BufferedWriter(fileWrite);
+          PrintWriter output = new PrintWriter(buffRead);
+          output.println(timestamp);
+        } catch (IOException e) {
+          timestamp = currentDate.minusMonths(6).toString();
+        }
+      }
+    }
 
     try {
       Class.forName("com.mysql.jdbc.Driver");
