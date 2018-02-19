@@ -38,13 +38,13 @@ public class DatabaseConnector {
     
     final LocalDate currentDate = LocalDate.now();
     String timestamp = null;
-    if (date == "Past Week") {
+    if ("Past Week".equals(date)) {
       timestamp = currentDate.minusDays(7).toString();
-    } else if (date == "Past Month") {
+    } else if ("Past Month".equals(date)) {
       timestamp = currentDate.minusMonths(1).toString();
-    } else if (date == "Past 3 Months") {
+    } else if ("Past 3 Months".equals(date)) {
       timestamp = currentDate.minusMonths(3).toString();
-    } else if (date == "Past 6 Months") {
+    } else if ("Past 6 Months".equals(date)) {
       timestamp = currentDate.minusMonths(6).toString();
     } else {
       final Path file = Paths.get("timestamp.txt");
@@ -52,9 +52,10 @@ public class DatabaseConnector {
         FileWriter fileWrite;
         try {
           fileWrite = new FileWriter("timestamp.txt", true);
-          BufferedWriter buffRead = new BufferedWriter(fileWrite);
-          PrintWriter output = new PrintWriter(buffRead);
+          final BufferedWriter buffRead = new BufferedWriter(fileWrite);
+          final PrintWriter output = new PrintWriter(buffRead);
           output.println(timestamp);
+          output.close();
         } catch (IOException e) {
           timestamp = currentDate.minusMonths(6).toString();
         }

@@ -21,12 +21,12 @@ import javax.swing.border.LineBorder;
 /**
  * Application window.
  */
-public class ExtempWindow {
+public class ExtempWindow extends JFrame {
 
   /**
-   * JFrame.
+   * Serial ID.
    */
-  private JFrame frame;
+  private static final long serialVersionUID = 1L;
 
   /**
    * Launch the application.
@@ -37,12 +37,8 @@ public class ExtempWindow {
        * Run the main program.
        */
       public void run() {
-        try {
           final ExtempWindow window = new ExtempWindow();
-          window.frame.setVisible(true);
-        } catch (Exception e) {
-          // e.printStackTrace();
-        }
+          window.setVisible(true);
       }
     });
   }
@@ -51,6 +47,7 @@ public class ExtempWindow {
    * Create the application.
    */
   public ExtempWindow() {
+    super("Extemp Auto Researcher");
     initialize();
   }
 
@@ -58,11 +55,11 @@ public class ExtempWindow {
    * Initialize the contents of the frame.
    */
   private void initialize() {
-    frame = new JFrame("Extemp Auto Researcher");
-    frame.setBounds(100, 100, 779, 465);
-    frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    frame.setVisible(true);
-    frame.setLayout(new GridBagLayout());
+    //this = new JFrame("Extemp Auto Researcher");
+    this.setBounds(100, 100, 779, 465);
+    this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    this.setVisible(true);
+    this.setLayout(new GridBagLayout());
 
     final JTextArea textArea = new JTextArea();
     textArea.setWrapStyleWord(true);
@@ -77,7 +74,7 @@ public class ExtempWindow {
     gbc.weighty = 1;
     gbc.fill = GridBagConstraints.BOTH;
     gbc.anchor = GridBagConstraints.CENTER;
-    frame.add(scrollPane, gbc);
+    this.add(scrollPane, gbc);
 
     final FlowLayout flowLay = new FlowLayout(FlowLayout.LEFT);
 
@@ -116,7 +113,7 @@ public class ExtempWindow {
       /**
        * Start indexing articles.
        */
-      public void actionPerformed(final ActionEvent e) {
+      public void actionPerformed(final ActionEvent action) {
         (new BackgroundTask(textArea, "Past Week")).execute();
       }
     });
@@ -125,7 +122,7 @@ public class ExtempWindow {
       /**
        * Start indexing articles.
        */
-      public void actionPerformed(final ActionEvent e) {
+      public void actionPerformed(final ActionEvent action) {
         (new BackgroundTask(textArea, "Past Month")).execute();
       }
     });
@@ -134,7 +131,7 @@ public class ExtempWindow {
       /**
        * Start indexing articles.
        */
-      public void actionPerformed(final ActionEvent e) {
+      public void actionPerformed(final ActionEvent action) {
         (new BackgroundTask(textArea, "Past 3 Months")).execute();
       }
     });
@@ -143,7 +140,7 @@ public class ExtempWindow {
       /**
        * Start indexing articles.
        */
-      public void actionPerformed(final ActionEvent e) {
+      public void actionPerformed(final ActionEvent action) {
         (new BackgroundTask(textArea, "Past 6 Months")).execute();
       }
     });
@@ -152,7 +149,7 @@ public class ExtempWindow {
       /**
        * Start indexing articles.
        */
-      public void actionPerformed(final ActionEvent e) {
+      public void actionPerformed(final ActionEvent action) {
         (new BackgroundTask(textArea, "Since Previous")).execute();
       }
     });

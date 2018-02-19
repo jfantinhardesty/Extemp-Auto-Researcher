@@ -1,13 +1,18 @@
 package extemp;
 
+import de.l3s.boilerpipe.BoilerpipeProcessingException;
 import de.l3s.boilerpipe.document.TextDocument;
 import de.l3s.boilerpipe.extractors.CommonExtractors;
 import de.l3s.boilerpipe.sax.BoilerpipeSAXInput;
 import de.l3s.boilerpipe.sax.HTMLDocument;
 import de.l3s.boilerpipe.sax.HTMLFetcher;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+
+import org.xml.sax.SAXException;
 
 /**
  * Runs the threads.
@@ -16,39 +21,23 @@ public class ThreadWorker implements Runnable {
   /**
    * Is false if a thread is not currently running.
    */
-  private boolean running = false;
+  private transient boolean running = false;
   /**
    * Is false if a thread has not failed.
    */
-  private boolean failure = false;
+  private transient boolean failure = false;
   /**
-   * Name of the source.
+   * Contains the title, url and source of the url.
    */
-  private final String sourceListName;
-  /**
-   * Name of the title.
-   */
-  private final String titleListName;
-  /**
-   * Name of the url.
-   */
-  private final String urlListName;
+  private final transient UrlInfo urlInfo;
 
   /**
    * Creates the thread.
    * 
-   * @param urlListName
-   *          String containing the url of the article
-   * @param titleListName
-   *          String containing the title of the article
-   * @param sourceListName
-   *          String containing the source of the title
+   * @param url a urlInfo object containing the title, source and link to the url.
    */
-  public ThreadWorker(final String urlListName, final String titleListName,
-      final String sourceListName) {
-    this.sourceListName = sourceListName;
-    this.titleListName = titleListName;
-    this.urlListName = urlListName;
+  public ThreadWorker(final UrlInfo url) {
+    this.urlInfo = url;
 
     final Thread thread = new Thread(this);
     thread.setDaemon(true);
@@ -68,12 +57,12 @@ public class ThreadWorker implements Runnable {
   public boolean isRunning() {
     return running;
   }
-
+  
   /**
-   * Returns the url.
+   * Returns the url link.
    */
   public String getUrl() {
-    return urlListName;
+    return urlInfo.getUrl();
   }
 
   /**
@@ -84,18 +73,22 @@ public class ThreadWorker implements Runnable {
     this.running = true;
 
     try {
-      final URL url = new URL(urlListName);
+      final URL url = new URL(getUrl());
       final HTMLDocument htmlDoc = HTMLFetcher.fetch(url);
       final TextDocument doc = new BoilerpipeSAXInput(htmlDoc.toInputSource()).getTextDocument();
-      String content = CommonExtractors.ARTICLE_EXTRACTOR.getText(doc);
+      final String content = CommonExtractors.ARTICLE_EXTRACTOR.getText(doc);
       if (!isFailure()) {
-        failure = FileCreator.createFile(content, sourceListName, titleListName, urlListName);
+        failure = FileCreator.createFile(content, urlInfo);
       }
     } catch (SocketTimeoutException e) {
       failure = true;
-    } catch (Exception e) {
-      // e.printStackTrace();
-      // System.out.println(e);
+    } catch (MalformedURLException e) {
+      failure = true;
+    } catch (IOException e) {
+      failure = true;
+    } catch (BoilerpipeProcessingException e) {
+      failure = true;
+    } catch (SAXException e) {
       failure = true;
     }
 

@@ -4,10 +4,10 @@ package extemp;
  * Main class.
  * @author pjlak
  */
-public final class Main {
+public final class MainProgram {
   
   // Private constructor because this class is a utility class
-  private Main() {
+  private MainProgram() {
     // Does nothing
   }
   

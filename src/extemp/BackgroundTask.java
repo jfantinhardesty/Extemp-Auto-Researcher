@@ -11,13 +11,13 @@ class BackgroundTask extends SwingWorker<String, Object> {
   /**
    * JTextArea to display information.
    */
-  private final JTextArea textArea;
+  private final transient JTextArea textArea;
   
   /**
    * Date string that keeps track of which button was pushed.
    */
-  private final String date;
-
+  private final transient String date;
+  
   /**
    * Creates the background task for the JTextArea.
    */

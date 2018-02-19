@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -57,19 +57,6 @@ public class MainEngine {
 
     // Create files
     FileCreator.createFiles();
-    /**
-     * final List<String> storedUrlList = new ArrayList<String>(); Scanner inFile;
-     * String token;
-     * 
-     * try { inFile = new Scanner(new File("articles/index.txt"));
-     * 
-     * while (inFile.hasNext()) { // find next line token = inFile.next();
-     * storedUrlList.add(token); } inFile.close();
-     * 
-     * } catch (FileNotFoundException e) { // TODO }
-     * textArea.append(storedUrlList.size() + "\n");
-     * textArea.update(textArea.getGraphics());
-     */
 
     /**
      * String urlString; for (final UrlInfo url : urlClass) { urlString = url.url;
@@ -110,7 +97,7 @@ public class MainEngine {
 
     JOptionPane.showMessageDialog(null, panel, "login", JOptionPane.QUESTION_MESSAGE);
 
-    final Map<String, String> logininformation = new Hashtable<String, String>();
+    final Map<String, String> logininformation = new ConcurrentHashMap<String, String>();
     logininformation.put("user", username.getText());
     logininformation.put("password", new String(password.getPassword()));
     return logininformation;
@@ -125,9 +112,8 @@ public class MainEngine {
    *
    * @param urlClass
    *          a list of UrlInfor containing all article information
-   * @param jTextArea
+   * @param textArea
    *          a text area to display information
-   * @return void
    */
   private static void threads(final List<UrlInfo> urlClass, final JTextArea textArea) {
     long startTime;
@@ -143,8 +129,7 @@ public class MainEngine {
       final List<ThreadWorker> workers = new ArrayList<ThreadWorker>();
       startTime = System.currentTimeMillis();
       for (int i = 0; i < threadAmount; i++) {
-        workers.add(new ThreadWorker(urlClass.get(j + i).getUrl(), urlClass.get(j + i).getTitle(),
-            urlClass.get(j + i).getSource()));
+        workers.add(new ThreadWorker(urlClass.get(j + i)));
       }
 
       // We must force the main thread to wait for all the workers

@@ -139,12 +139,20 @@ public final class FileCreator {
     sourceMap.put("Gallup.Com", "Gallup");
     sourceMap.put("© 1995 - 2017 The Jerusalem Post. All rights reserved.", "The Jerusalem Post");
     sourceMap.put(
-        "© Copyright The Financial Times Ltd 2017. &quot;FT&quot; and &quot;Financial Times&quot; are trademarks of the Financial Times. See http://www.ft.com/servicestools/help/terms#legal1 for the terms and conditions of reuse.",
+        "© Copyright The Financial Times Ltd 2017. &quot;FT&quot; and &quot;Financial Times&quot; "
+            + "are trademarks of the Financial Times. "
+            + "See http://www.ft.com/servicestools/help/terms#legal1 for the terms and conditions of reuse.",
         "Financial Times");
     sourceMap.put("©2017 Los Angeles Times", "LA Times");
     sourceMap.put("Â© 2015 Aljazeera Network", "Al Jazeera");
     sourceMap.put(
-        "All rights reserved. Users may download and print extracts of content from this website for their own personal and non-commercial use only. Republication or redistribution of Reuters content, including by framing or similar means, is expressly prohibited without the prior written consent of Reuters. Reuters and the Reuters sphere logo are registered trademarks or trademarks of the Reuters group of companies around the world. © Reuters 2017",
+        "All rights reserved. Users may download and print extracts of content from this website "
+            + "for their own personal and non-commercial use only. Republication or redistribution "
+            + "of Reuters content, including by framing or similar means, is expressly prohibited "
+            + "without "
+            + "the prior written consent of Reuters. Reuters and the Reuters sphere logo are "
+            + "registered trademarks or trademarks of the Reuters group of companies around "
+            + "the world. © Reuters 2017",
         "Reuters");
     sourceMap.put("AllAfrica News: Actualités", "All Africa");
     sourceMap.put("Christian Science Monitor | All Stories", "Christian Science Monitor");
@@ -160,10 +168,12 @@ public final class FileCreator {
     sourceMap.put("Copyright Toronto Star 1996-2013 , http://www.thestar.com/terms",
         "Toronto Star");
     sourceMap.put(
-        "Copyright: (C) British Broadcasting Corporation, see http://news.bbc.co.uk/2/hi/help/rss/4498287.stm for terms and conditions of reuse.",
+        "Copyright: (C) British Broadcasting Corporation, see "
+            + "http://news.bbc.co.uk/2/hi/help/rss/4498287.stm for terms and conditions of reuse.",
         "BBC");
     sourceMap.put(
-        "Copyright2017 The Associated Press. All rights reserved. This material may not be published, broadcast, rewritten or redistributed",
+        "Copyright2017 The Associated Press. All rights reserved. This "
+            + "material may not be published, broadcast, rewritten or redistributed",
         "Associated Press");
     sourceMap.put("FOX News", "Fox News");
     sourceMap.put("Copyright 2017 FOX News Channel", "Fox News");
@@ -191,10 +201,10 @@ public final class FileCreator {
     sourceMap.put("Urban Center", "Urban Center");
     return sourceMap;
   }
-  
+
   // Private constructor because this is a utility class.
   private FileCreator() {
-    //Does nothing
+    // Does nothing
   }
 
   /**
@@ -208,8 +218,8 @@ public final class FileCreator {
   }
 
   /**
-   * Creates a folder which will store folders for each news source
-   * that will store their corresponding articles.
+   * Creates a folder which will store folders for each news source that will
+   * store their corresponding articles.
    */
   private static void createDirectory() {
     for (int i = 0; i < sourceNames.length; i++) {
@@ -243,13 +253,13 @@ public final class FileCreator {
       try {
         Files.write(file, strToBytes);
       } catch (IOException e) {
-        // TODO Auto-generated catch block
+        // TODO Auto-generated catch block'
       }
     } else {
       try {
         Files.createFile(file);
       } catch (IOException e) {
-        // TODO
+        // TODO Auto-generated catch block'
       }
     }
   }
@@ -257,36 +267,37 @@ public final class FileCreator {
   /**
    * Create a text file of the article.
    */
-  public static boolean createFile(final String content, final String sourceListName,
-      final String titleListName, final String urlListName) {
+  public static boolean createFile(final String content, final UrlInfo url) {
     boolean failure = false;
     if (content != null) {
       final ArrayList<String> lines = new ArrayList<String>();
       final ArrayList<String> headerLines = new ArrayList<String>();
       final ArrayList<String> footerLines = new ArrayList<String>();
       String sourceName;
+      final String urlLink = url.getUrl();
+      final String urlTitle = url.getTitle();
 
-      sourceName = SOURCEMAP.get(sourceListName);
+      sourceName = SOURCEMAP.get(url.getSource());
 
       if (sourceName == null) {
         sourceName = "";
         try (FileWriter fileWrite = new FileWriter("articles/noIfElse.txt", true);
             BufferedWriter buffRead = new BufferedWriter(fileWrite);
             PrintWriter output = new PrintWriter(buffRead)) {
-          output.println(urlListName);
+          output.println(urlLink);
         } catch (IOException e) {
           // TODO
         }
       }
-      headerLines.add(titleListName);
+      headerLines.add(urlTitle);
       headerLines.add(sourceName);
       headerLines.add("");
       footerLines.add("");
-      footerLines.add(urlListName);
+      footerLines.add(urlLink);
       try {
         lines.add(content);
         final Path file = Paths.get(baseFolder + "/" + sourceName + "/"
-            + titleListName.replaceAll("[^a-zA-Z0-9_\\-\\.]", "") + ".txt");
+            + urlTitle.replaceAll("[^a-zA-Z0-9_\\-\\.]", "") + ".txt");
         Files.createFile(file);
         Files.write(file, headerLines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
         Files.write(file, lines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
@@ -294,8 +305,6 @@ public final class FileCreator {
       } catch (FileAlreadyExistsException e) {
         failure = true;
       } catch (IOException e) {
-        failure = true;
-      } catch (NullPointerException e) {
         failure = true;
       }
     }
