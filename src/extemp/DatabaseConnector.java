@@ -20,22 +20,24 @@ import java.util.Map;
 import javax.swing.JTextArea;
 
 /**
- * Database Connector class.
- * 
- * @author pjlak
+ * Responsible for connecting to the mySQL database to download and index
+ * articles.
  */
 public class DatabaseConnector {
   /**
-   * Returns a list of UrlInfo elements.
+   * Connects to the mySQL database and returns a list of UrlInfo elements.
    * 
    * @param textArea
    *          a JTextArea to display information to the user.
-   * @return a list of UrlInfo.
+   * @param login
+   *          Map containing the username and password for the database
+   * @param date
+   *          date when articles will be indexed from.
    */
   public static List<UrlInfo> connectDatabase(final JTextArea textArea,
       final Map<String, String> login, final String date) {
     final List<UrlInfo> urlClass = new ArrayList<UrlInfo>();
-    
+
     final LocalDate currentDate = LocalDate.now();
     String timestamp = null;
     if ("Past Week".equals(date)) {
@@ -88,7 +90,6 @@ public class DatabaseConnector {
     } catch (SQLException e) {
       textArea.append("Could not connect to database.");
       textArea.update(textArea.getGraphics());
-      // e.printStackTrace();
     }
     return urlClass;
   }

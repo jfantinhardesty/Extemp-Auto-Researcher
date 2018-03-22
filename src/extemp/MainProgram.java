@@ -2,7 +2,6 @@ package extemp;
 
 /**
  * Main class.
- * @author pjlak
  */
 public final class MainProgram {
   

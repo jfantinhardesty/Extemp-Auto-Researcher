@@ -12,14 +12,19 @@ class BackgroundTask extends SwingWorker<String, Object> {
    * JTextArea to display information.
    */
   private final transient JTextArea textArea;
-  
+
   /**
    * Date string that keeps track of which button was pushed.
    */
   private final transient String date;
-  
+
   /**
    * Creates the background task for the JTextArea.
+   * 
+   * @param textArea
+   *          a JTextArea to display information to the user.
+   * @param date
+   *          date when articles will be indexed from.
    */
   public BackgroundTask(final JTextArea textArea, final String date) {
     super();

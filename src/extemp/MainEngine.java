@@ -6,7 +6,6 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,13 +40,12 @@ public class MainEngine {
   private static String sourceName = "index";
 
   /**
-   * Returns void. JTextArea is the area on the screen where updates will be given
-   * about the process of the indexing of articles
+   * Starts downloading articles.
    *
    * @param textArea
    *          a text area to display messages
-   * @see ArrayList
-   * @see Connection
+   * @param date
+   *          date when articles will be indexed from.
    */
   public void startDownload(final JTextArea textArea, final String date) {
     // Create a list of UrlInfo from the mySQL database
@@ -65,9 +63,8 @@ public class MainEngine {
      */
 
     final long totalStartTime = System.currentTimeMillis();
-    final int articleAmount = urlClass.size();
 
-    textArea.append(articleAmount + " articles to cache\n");
+    textArea.append(urlClass.size() + " articles to cache\n");
     textArea.update(textArea.getGraphics());
 
     threads(urlClass, textArea);
@@ -76,7 +73,7 @@ public class MainEngine {
     textArea.append("Completed in " + (currentTime - totalStartTime) / (60000) + "min\n");
     textArea.update(textArea.getGraphics());
   }
-  
+
   /**
    * Creates a popup windows for the user to login to the MySQL database.
    */
@@ -104,16 +101,13 @@ public class MainEngine {
   }
 
   /**
-   * Returns void. UrlList is the ArrayList of the Urls, titleList is the
-   * ArrayList of titles, and sourceList is the ArrayList of sources.
-   * 
-   * <p>This method will run multiple threads which will each connect to a Url and
+   * This method will run multiple threads which will each connect to a Url and
    * grab the text from the url and store that into a text file.
    *
    * @param urlClass
    *          a list of UrlInfor containing all article information
    * @param textArea
-   *          a text area to display information
+   *          a JTextArea to display information to the user.
    */
   private static void threads(final List<UrlInfo> urlClass, final JTextArea textArea) {
     long startTime;

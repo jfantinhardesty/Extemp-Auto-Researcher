@@ -19,17 +19,14 @@ import org.xml.sax.SAXException;
  */
 public class ThreadWorker implements Runnable {
   /**
-   * Is false if a thread is not currently running.
+   * Is false if a thread is not currently running or failed.
    */
-  private transient boolean running = false;
-  /**
-   * Is false if a thread has not failed.
-   */
-  private transient boolean failure = false;
+  private boolean running = false;
+
   /**
    * Contains the title, url and source of the url.
    */
-  private final transient UrlInfo urlInfo;
+  private final UrlInfo urlInfo;
 
   /**
    * Creates the thread.
@@ -42,13 +39,6 @@ public class ThreadWorker implements Runnable {
     final Thread thread = new Thread(this);
     thread.setDaemon(true);
     thread.start();
-  }
-
-  /**
-   * Returns if the thread failed.
-   */
-  public boolean isFailure() {
-    return failure;
   }
 
   /**
@@ -70,28 +60,28 @@ public class ThreadWorker implements Runnable {
    */
   @Override
   public void run() {
-    this.running = true;
+    running = true;
 
     try {
       final URL url = new URL(getUrl());
       final HTMLDocument htmlDoc = HTMLFetcher.fetch(url);
       final TextDocument doc = new BoilerpipeSAXInput(htmlDoc.toInputSource()).getTextDocument();
       final String content = CommonExtractors.ARTICLE_EXTRACTOR.getText(doc);
-      if (!isFailure()) {
-        failure = FileCreator.createFile(content, urlInfo);
+      if (isRunning()) {
+        running = FileCreator.createFile(content, urlInfo);
       }
     } catch (SocketTimeoutException e) {
-      failure = true;
+      running = false;
     } catch (MalformedURLException e) {
-      failure = true;
+      running = false;
     } catch (IOException e) {
-      failure = true;
+      running = false;
     } catch (BoilerpipeProcessingException e) {
-      failure = true;
+      running = false;
     } catch (SAXException e) {
-      failure = true;
+      running = false;
     }
 
-    this.running = false;
+    running = false;
   }
 }

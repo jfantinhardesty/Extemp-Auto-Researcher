@@ -60,13 +60,14 @@ public final class FileCreator {
       "Washington Post", "Washington Times", "Wilson Center" };
   /**
    * HasMap of all sources information and the corresponding news outlet.
+   * Not complete for the following 
+   * Copyright 2017,
+   * ecfr,
+   * epic,
+   * Council on Foreign Relations,
+   * Hoover Institution,
+   * Manhattan Institute
    */
-  // Not complete for the following
-  // Copyright 2017
-  // ecfr epic
-  // Council on Foreign Relations
-  // Hoover Institution
-  // Manhattan Institute
   private static final Map<String, String> SOURCEMAP = createSourceMap();
 
   private static Map<String, String> createSourceMap() {
@@ -266,6 +267,11 @@ public final class FileCreator {
 
   /**
    * Create a text file of the article.
+   * 
+   * @param content
+   *          article contents that will be added to the file.
+   * @param url
+   *          contains the article title, url, and source.
    */
   public static boolean createFile(final String content, final UrlInfo url) {
     boolean failure = false;
