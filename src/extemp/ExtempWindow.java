@@ -22,7 +22,6 @@ import javax.swing.border.LineBorder;
  * Application window.
  */
 public class ExtempWindow extends JFrame {
-
   /**
    * Serial ID.
    */
@@ -33,12 +32,10 @@ public class ExtempWindow extends JFrame {
    */
   public static void start() {
     EventQueue.invokeLater(new Runnable() {
-      /**
-       * Run the main program.
-       */
+      /** Run the main program. */
       public void run() {
-          final ExtempWindow window = new ExtempWindow();
-          window.setVisible(true);
+        final ExtempWindow window = new ExtempWindow();
+        window.setVisible(true);
       }
     });
   }
@@ -55,11 +52,11 @@ public class ExtempWindow extends JFrame {
    * Initialize the contents of the frame.
    */
   private void initialize() {
-    //this = new JFrame("Extemp Auto Researcher");
-    this.setBounds(100, 100, 779, 465);
-    this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    this.setVisible(true);
-    this.setLayout(new GridBagLayout());
+    // this = new JFrame("Extemp Auto Researcher");
+    setBounds(100, 100, 779, 465);
+    setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    setVisible(true);
+    setLayout(new GridBagLayout());
 
     final JTextArea textArea = new JTextArea();
     textArea.setWrapStyleWord(true);
@@ -74,7 +71,7 @@ public class ExtempWindow extends JFrame {
     gbc.weighty = 1;
     gbc.fill = GridBagConstraints.BOTH;
     gbc.anchor = GridBagConstraints.CENTER;
-    this.add(scrollPane, gbc);
+    add(scrollPane, gbc);
 
     final FlowLayout flowLay = new FlowLayout(FlowLayout.LEFT);
 
@@ -108,49 +105,39 @@ public class ExtempWindow extends JFrame {
 
     final JButton btnHelp = new JButton("Help");
     menuBar.add(btnHelp);
-    
+
     btnPastWeek.addActionListener(new ActionListener() {
-      /**
-       * Start indexing articles.
-       */
+      /** Start indexing articles. */
       public void actionPerformed(final ActionEvent action) {
-        (new BackgroundTask(textArea, "Past Week")).execute();
+        new BackgroundTask(textArea, "Past Week").execute();
       }
     });
-    
+
     btnPastMonth.addActionListener(new ActionListener() {
-      /**
-       * Start indexing articles.
-       */
+      /** Start indexing articles. */
       public void actionPerformed(final ActionEvent action) {
-        (new BackgroundTask(textArea, "Past Month")).execute();
+        new BackgroundTask(textArea, "Past Month").execute();
       }
     });
-    
+
     btnPast3Months.addActionListener(new ActionListener() {
-      /**
-       * Start indexing articles.
-       */
+      /** Start indexing articles. */
       public void actionPerformed(final ActionEvent action) {
-        (new BackgroundTask(textArea, "Past 3 Months")).execute();
+        new BackgroundTask(textArea, "Past 3 Months").execute();
       }
     });
-    
+
     btnPast6Months.addActionListener(new ActionListener() {
-      /**
-       * Start indexing articles.
-       */
+      /** Start indexing articles. */
       public void actionPerformed(final ActionEvent action) {
-        (new BackgroundTask(textArea, "Past 6 Months")).execute();
+        new BackgroundTask(textArea, "Past 6 Months").execute();
       }
     });
 
     btnSinceIndex.addActionListener(new ActionListener() {
-      /**
-       * Start indexing articles.
-       */
+      /** Start indexing articles. */
       public void actionPerformed(final ActionEvent action) {
-        (new BackgroundTask(textArea, "Since Previous")).execute();
+        new BackgroundTask(textArea, "Since Previous").execute();
       }
     });
   }

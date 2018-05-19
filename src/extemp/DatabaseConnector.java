@@ -24,6 +24,14 @@ import javax.swing.JTextArea;
  * articles.
  */
 public class DatabaseConnector {
+
+  /**
+   * Constructor responsible for connecting to the database.
+   */
+  public DatabaseConnector() {
+
+  }
+
   /**
    * Connects to the mySQL database and returns a list of UrlInfo elements.
    * 
@@ -33,11 +41,12 @@ public class DatabaseConnector {
    *          Map containing the username and password for the database
    * @param date
    *          date when articles will be indexed from.
-   * @return list of all of the urls with their source and title
+   * @return a list of UrlInfo containing the url, source, and title of each
+   *         article
    */
-  public static List<UrlInfo> connectDatabase(final JTextArea textArea,
-      final Map<String, String> login, final String date) {
-    final List<UrlInfo> urlClass = new ArrayList<UrlInfo>();
+  public List<UrlInfo> connectDatabase(final JTextArea textArea, final Map<String, String> login,
+      final String date) {
+    final List<UrlInfo> urlClass = new ArrayList<>();
 
     final LocalDate currentDate = LocalDate.now();
     String timestamp = null;
@@ -71,10 +80,10 @@ public class DatabaseConnector {
       // TODO
     }
     try (
-        final Connection conn = DriverManager.getConnection(
+        Connection conn = DriverManager.getConnection(
             "jdbc:mysql://" + "sql122.main-hosting.eu" + "/" + "u445594861_art", login.get("user"),
             login.get("password"));
-        final Statement statement1 = conn.createStatement();) {
+        Statement statement1 = conn.createStatement()) {
       textArea.append("Database is Connected.");
       textArea.update(textArea.getGraphics());
 

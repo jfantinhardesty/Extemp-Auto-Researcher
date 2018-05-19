@@ -8,10 +8,12 @@ public class UrlInfo {
    * A string that stores the url.
    */
   private final String url;
+
   /**
    * A string that stores the name of the news source.
    */
   private final String source;
+
   /**
    * A string that store the title of the article.
    */
@@ -35,6 +37,7 @@ public class UrlInfo {
 
   /**
    * Returns the url.
+   * 
    * @return the url link
    */
   public String getUrl() {
@@ -43,6 +46,7 @@ public class UrlInfo {
 
   /**
    * Returns the source.
+   * 
    * @return the source of the article
    */
   public String getSource() {
@@ -51,6 +55,7 @@ public class UrlInfo {
 
   /**
    * Returns the title.
+   * 
    * @return the title of the article
    */
   public String getTitle() {

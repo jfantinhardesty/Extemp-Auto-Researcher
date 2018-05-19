@@ -24,15 +24,21 @@ import javax.swing.SwingConstants;
  * storing them into text files.
  */
 public class MainEngine {
-
   /**
    * Total amount of threads to be used in the program default set to 100.
    */
+
   private static int threadAmount = 100;
   /**
    * Name of the folder which will store every article.
    */
+
   private static String baseFolder = "articles";
+
+  /**
+   * Connects to the database.
+   */
+  private DatabaseConnector connector;
   /**
    * Name of the file that stores a list of urls that have been indexed by the
    * program.
@@ -51,12 +57,14 @@ public class MainEngine {
     // Create a list of UrlInfo from the mySQL database
     Map<String, String> login;
     login = login();
-    final List<UrlInfo> urlClass = DatabaseConnector.connectDatabase(textArea, login, date);
+
+    connector = new DatabaseConnector();
+    final List<UrlInfo> urlClass = connector.connectDatabase(textArea, login, date);
 
     // Create files
-    FileCreator.createFiles();
+    FileCreator.createSetup();
 
-    /**
+    /*
      * String urlString; for (final UrlInfo url : urlClass) { urlString = url.url;
      * for (int j = 0; j < storedUrlList.size(); j++) { if
      * (urlString.equals(storedUrlList.get(j))) { urlClass.remove(url); } } }
@@ -70,12 +78,13 @@ public class MainEngine {
     threads(urlClass, textArea);
 
     final long currentTime = System.currentTimeMillis();
-    textArea.append("Completed in " + (currentTime - totalStartTime) / (60000) + "min\n");
+    textArea.append("Completed in " + (currentTime - totalStartTime) / 60000 + "min\n");
     textArea.update(textArea.getGraphics());
   }
 
   /**
    * Creates a popup windows for the user to login to the MySQL database.
+   * 
    * @return A map containing the associated strings from the database.
    */
   public static Map<String, String> login() {
@@ -95,7 +104,7 @@ public class MainEngine {
 
     JOptionPane.showMessageDialog(null, panel, "login", JOptionPane.QUESTION_MESSAGE);
 
-    final Map<String, String> logininformation = new ConcurrentHashMap<String, String>();
+    final Map<String, String> logininformation = new ConcurrentHashMap<>();
     logininformation.put("user", username.getText());
     logininformation.put("password", new String(password.getPassword()));
     return logininformation;
@@ -121,7 +130,7 @@ public class MainEngine {
     PrintWriter out;
 
     for (int j = 0; j < articleAmount - threadAmount; j += threadAmount) {
-      final List<ThreadWorker> workers = new ArrayList<ThreadWorker>();
+      final List<ThreadWorker> workers = new ArrayList<>();
       startTime = System.currentTimeMillis();
       for (int i = 0; i < threadAmount; i++) {
         workers.add(new ThreadWorker(urlClass.get(j + i)));
@@ -166,7 +175,7 @@ public class MainEngine {
       currentTime = System.currentTimeMillis();
       textArea.append(
           (count - failureCount) + "/" + articleAmount + " completed: " + "Response time of "
-              + (currentTime - startTime) + "ms" + "Total articles checked: " + (count) + "\n");
+              + (currentTime - startTime) + "ms" + "Total articles checked: " + count + "\n");
       textArea.update(textArea.getGraphics());
     }
   }

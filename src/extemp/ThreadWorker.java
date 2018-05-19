@@ -1,18 +1,16 @@
 package extemp;
 
+import java.io.IOException;
+import java.net.URL;
+
+import org.xml.sax.SAXException;
+
 import de.l3s.boilerpipe.BoilerpipeProcessingException;
 import de.l3s.boilerpipe.document.TextDocument;
 import de.l3s.boilerpipe.extractors.CommonExtractors;
 import de.l3s.boilerpipe.sax.BoilerpipeSAXInput;
 import de.l3s.boilerpipe.sax.HTMLDocument;
 import de.l3s.boilerpipe.sax.HTMLFetcher;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
-
-import org.xml.sax.SAXException;
 
 /**
  * Runs the threads.
@@ -21,11 +19,13 @@ public class ThreadWorker implements Runnable {
   /**
    * Is false if a thread is not currently running.
    */
-  private boolean running = false;
+  private boolean running;
+
   /**
    * Is false if a thread has not failed.
    */
-  private boolean failure = false;
+  private boolean failure;
+
   /**
    * Contains the title, url and source of the url.
    */
@@ -47,6 +47,7 @@ public class ThreadWorker implements Runnable {
 
   /**
    * Returns if the thread failed.
+   * 
    * @return true if the thread failed, false otherwise
    */
   public boolean isFailure() {
@@ -55,6 +56,7 @@ public class ThreadWorker implements Runnable {
 
   /**
    * Returns if the thread is running.
+   * 
    * @return true if the thread is running, false otherwise
    */
   public boolean isRunning() {
@@ -63,15 +65,14 @@ public class ThreadWorker implements Runnable {
 
   /**
    * Returns the url link.
+   * 
    * @return the url link
    */
   public String getUrl() {
     return urlInfo.getUrl();
   }
 
-  /**
-   * Runs the thread.
-   */
+  /** Runs the thread. */
   @Override
   public void run() {
     this.running = true;
@@ -84,15 +85,7 @@ public class ThreadWorker implements Runnable {
       if (!isFailure()) {
         failure = FileCreator.createFile(content, urlInfo);
       }
-    } catch (SocketTimeoutException e) {
-      failure = true;
-    } catch (MalformedURLException e) {
-      failure = true;
-    } catch (IOException e) {
-      failure = true;
-    } catch (BoilerpipeProcessingException e) {
-      failure = true;
-    } catch (SAXException e) {
+    } catch (IOException | BoilerpipeProcessingException | SAXException e) {
       failure = true;
     }
 

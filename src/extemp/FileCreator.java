@@ -1,13 +1,11 @@
 package extemp;
 
 import java.io.BufferedWriter;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,11 +24,13 @@ public final class FileCreator {
    * Name of the folder which will store every article.
    */
   private static String baseFolder = "articles";
+
   /**
    * Name of the file that stores a list of urls that have been indexed by the
    * program.
    */
   private static String sourceName = "index";
+
   /**
    * Array of all news sources that articles are pulled from.
    */
@@ -72,7 +72,7 @@ public final class FileCreator {
    * @return map for the database title and a simple title
    */
   private static Map<String, String> createSourceMap() {
-    final Map<String, String> sourceMap = new ConcurrentHashMap<String, String>();
+    final Map<String, String> sourceMap = new ConcurrentHashMap<>();
     sourceMap.put("TheHill - The Hill News", "The Hill");
     sourceMap.put("ThinkProgress - Medium", "Think Progress");
     sourceMap.put("Americas", "The Economist");
@@ -215,7 +215,7 @@ public final class FileCreator {
    * Creates a directory of all the files, an index for the articles, and a
    * current timestamp.
    */
-  public static void createFiles() {
+  public static void createSetup() {
     createDirectory();
     createIndex();
     createTimeStamp();
@@ -280,9 +280,9 @@ public final class FileCreator {
   public static boolean createFile(final String content, final UrlInfo url) {
     boolean failure = false;
     if (content != null) {
-      final ArrayList<String> lines = new ArrayList<String>();
-      final ArrayList<String> headerLines = new ArrayList<String>();
-      final ArrayList<String> footerLines = new ArrayList<String>();
+      final ArrayList<String> lines = new ArrayList<>();
+      final ArrayList<String> headerLines = new ArrayList<>();
+      final ArrayList<String> footerLines = new ArrayList<>();
       String sourceName;
       final String urlLink = url.getUrl();
       final String urlTitle = url.getTitle();
@@ -312,8 +312,6 @@ public final class FileCreator {
         Files.write(file, headerLines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
         Files.write(file, lines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
         Files.write(file, footerLines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
-      } catch (FileAlreadyExistsException e) {
-        failure = true;
       } catch (IOException e) {
         failure = true;
       }
