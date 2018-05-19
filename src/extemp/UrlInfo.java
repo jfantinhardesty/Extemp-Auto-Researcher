@@ -35,6 +35,7 @@ public class UrlInfo {
 
   /**
    * Returns the url.
+   * @return the url link
    */
   public String getUrl() {
     return url;
@@ -42,6 +43,7 @@ public class UrlInfo {
 
   /**
    * Returns the source.
+   * @return the source of the article
    */
   public String getSource() {
     return source;
@@ -49,6 +51,7 @@ public class UrlInfo {
 
   /**
    * Returns the title.
+   * @return the title of the article
    */
   public String getTitle() {
     return title;

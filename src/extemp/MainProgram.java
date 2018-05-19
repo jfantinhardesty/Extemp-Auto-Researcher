@@ -5,13 +5,9 @@ package extemp;
  */
 public final class MainProgram {
   
-  // Private constructor because this class is a utility class
-  private MainProgram() {
-    // Does nothing
-  }
-  
   /**
    * Launch the application.
+   * @param args Generic arguments for main
    */
   public static void main(final String[] args) {
     ExtempWindow.start();

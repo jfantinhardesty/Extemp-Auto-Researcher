@@ -59,17 +59,18 @@ public final class FileCreator {
       "United Nations University", "Urban Institute", "Wall Street Journal", "Washington Examiner",
       "Washington Post", "Washington Times", "Wilson Center" };
   /**
-   * HasMap of all sources information and the corresponding news outlet.
-   * Not complete for the following 
-   * Copyright 2017,
-   * ecfr,
-   * epic,
-   * Council on Foreign Relations,
-   * Hoover Institution,
-   * Manhattan Institute
+   * HasMap of all sources information and the corresponding news outlet. Not
+   * complete for the following Copyright 2017, ecfr, epic, Council on Foreign
+   * Relations, Hoover Institution, Manhattan Institute
    */
   private static final Map<String, String> SOURCEMAP = createSourceMap();
 
+  /**
+   * Creates the map associating the saved title in the database with a simple
+   * source title.
+   * 
+   * @return map for the database title and a simple title
+   */
   private static Map<String, String> createSourceMap() {
     final Map<String, String> sourceMap = new ConcurrentHashMap<String, String>();
     sourceMap.put("TheHill - The Hill News", "The Hill");
@@ -203,7 +204,9 @@ public final class FileCreator {
     return sourceMap;
   }
 
-  // Private constructor because this is a utility class.
+  /**
+   * Private constructor because it is a utility class.
+   */
   private FileCreator() {
     // Does nothing
   }
@@ -272,6 +275,7 @@ public final class FileCreator {
    *          article contents that will be added to the file.
    * @param url
    *          contains the article title, url, and source.
+   * @return true if the file was created, false otherwise
    */
   public static boolean createFile(final String content, final UrlInfo url) {
     boolean failure = false;

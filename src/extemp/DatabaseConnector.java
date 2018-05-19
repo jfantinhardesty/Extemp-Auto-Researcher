@@ -33,6 +33,7 @@ public class DatabaseConnector {
    *          Map containing the username and password for the database
    * @param date
    *          date when articles will be indexed from.
+   * @return list of all of the urls with their source and title
    */
   public static List<UrlInfo> connectDatabase(final JTextArea textArea,
       final Map<String, String> login, final String date) {

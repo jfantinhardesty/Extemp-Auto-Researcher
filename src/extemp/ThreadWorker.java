@@ -19,10 +19,13 @@ import org.xml.sax.SAXException;
  */
 public class ThreadWorker implements Runnable {
   /**
-   * Is false if a thread is not currently running or failed.
+   * Is false if a thread is not currently running.
    */
   private boolean running = false;
-
+  /**
+   * Is false if a thread has not failed.
+   */
+  private boolean failure = false;
   /**
    * Contains the title, url and source of the url.
    */
@@ -31,7 +34,8 @@ public class ThreadWorker implements Runnable {
   /**
    * Creates the thread.
    * 
-   * @param url a urlInfo object containing the title, source and link to the url.
+   * @param url
+   *          a urlInfo object containing the title, source and link to the url.
    */
   public ThreadWorker(final UrlInfo url) {
     this.urlInfo = url;
@@ -42,14 +46,24 @@ public class ThreadWorker implements Runnable {
   }
 
   /**
+   * Returns if the thread failed.
+   * @return true if the thread failed, false otherwise
+   */
+  public boolean isFailure() {
+    return failure;
+  }
+
+  /**
    * Returns if the thread is running.
+   * @return true if the thread is running, false otherwise
    */
   public boolean isRunning() {
     return running;
   }
-  
+
   /**
    * Returns the url link.
+   * @return the url link
    */
   public String getUrl() {
     return urlInfo.getUrl();
@@ -60,28 +74,28 @@ public class ThreadWorker implements Runnable {
    */
   @Override
   public void run() {
-    running = true;
+    this.running = true;
 
     try {
       final URL url = new URL(getUrl());
       final HTMLDocument htmlDoc = HTMLFetcher.fetch(url);
       final TextDocument doc = new BoilerpipeSAXInput(htmlDoc.toInputSource()).getTextDocument();
       final String content = CommonExtractors.ARTICLE_EXTRACTOR.getText(doc);
-      if (isRunning()) {
-        running = FileCreator.createFile(content, urlInfo);
+      if (!isFailure()) {
+        failure = FileCreator.createFile(content, urlInfo);
       }
     } catch (SocketTimeoutException e) {
-      running = false;
+      failure = true;
     } catch (MalformedURLException e) {
-      running = false;
+      failure = true;
     } catch (IOException e) {
-      running = false;
+      failure = true;
     } catch (BoilerpipeProcessingException e) {
-      running = false;
+      failure = true;
     } catch (SAXException e) {
-      running = false;
+      failure = true;
     }
 
-    running = false;
+    this.running = false;
   }
 }

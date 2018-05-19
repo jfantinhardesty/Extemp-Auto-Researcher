@@ -76,6 +76,7 @@ public class MainEngine {
 
   /**
    * Creates a popup windows for the user to login to the MySQL database.
+   * @return A map containing the associated strings from the database.
    */
   public static Map<String, String> login() {
     final JPanel panel = new JPanel(new BorderLayout(5, 5));
@@ -138,7 +139,7 @@ public class MainEngine {
             Thread.currentThread().interrupt();
           }
         }
-        if (worker.isFailure()) {
+        if (worker.isRunning()) {
           failureCount++;
           try {
             fileWrite = new FileWriter("articles/failure.txt", true);
