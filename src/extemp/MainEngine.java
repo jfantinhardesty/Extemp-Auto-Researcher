@@ -2,10 +2,6 @@ package extemp;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,23 +23,25 @@ public class MainEngine {
   /**
    * Total amount of threads to be used in the program default set to 100.
    */
-
   private static int threadAmount = 100;
-  /**
-   * Name of the folder which will store every article.
-   */
-
-  private static String baseFolder = "articles";
 
   /**
    * Connects to the database.
    */
-  private DatabaseConnector connector;
+  private final DatabaseConnector connector;
+
   /**
-   * Name of the file that stores a list of urls that have been indexed by the
-   * program.
+   * Creates the various files and folders.
    */
-  private static String sourceName = "index";
+  private final FileCreator fileCreator;
+
+  /**
+   * Constructor that creates the FileCreator and DatabaseConnector.
+   */
+  public MainEngine() {
+    connector = new DatabaseConnector();
+    fileCreator = new FileCreator();
+  }
 
   /**
    * Starts downloading articles.
@@ -58,11 +56,10 @@ public class MainEngine {
     Map<String, String> login;
     login = login();
 
-    connector = new DatabaseConnector();
     final List<UrlInfo> urlClass = connector.connectDatabase(textArea, login, date);
 
     // Create files
-    FileCreator.createSetup();
+    fileCreator.createSetup();
 
     /*
      * String urlString; for (final UrlInfo url : urlClass) { urlString = url.url;
@@ -125,9 +122,7 @@ public class MainEngine {
     final int articleAmount = urlClass.size();
     int count = 0;
     int failureCount = 0;
-    FileWriter fileWrite;
-    BufferedWriter bufferedWrite;
-    PrintWriter out;
+    final FileCreator fileCreator = new FileCreator();
 
     for (int j = 0; j < articleAmount - threadAmount; j += threadAmount) {
       final List<ThreadWorker> workers = new ArrayList<>();
@@ -143,38 +138,27 @@ public class MainEngine {
         while (worker.isRunning()) {
           try {
             Thread.sleep(100);
-          } catch (InterruptedException e) {
+          } catch (final InterruptedException e) {
             // e.printStackTrace();
             Thread.currentThread().interrupt();
           }
         }
+
         if (worker.isRunning()) {
+          // If the worker is running, then the worker timed out so we consider it to be a
+          // failure
           failureCount++;
-          try {
-            fileWrite = new FileWriter("articles/failure.txt", true);
-            bufferedWrite = new BufferedWriter(fileWrite);
-            out = new PrintWriter(bufferedWrite);
-            out.println(worker.getUrl());
-            out.close();
-          } catch (IOException e) {
-            // TODO
-          }
+          fileCreator.addAsFailure(worker.getUrl());
         } else {
-          try {
-            fileWrite = new FileWriter(baseFolder + "/" + sourceName + ".txt", true);
-            bufferedWrite = new BufferedWriter(fileWrite);
-            out = new PrintWriter(bufferedWrite);
-            out.println(worker.getUrl());
-            out.close();
-          } catch (IOException e) {
-            // TODO
-          }
+          // If it ended, then it must have been a success
+          fileCreator.addAsSuccess(worker.getUrl());
         }
       }
+
       count += threadAmount;
       currentTime = System.currentTimeMillis();
-      textArea.append(
-          (count - failureCount) + "/" + articleAmount + " completed: " + "Response time of "
+      textArea
+          .append(count - failureCount + "/" + articleAmount + " completed: " + "Response time of "
               + (currentTime - startTime) + "ms" + "Total articles checked: " + count + "\n");
       textArea.update(textArea.getGraphics());
     }

@@ -2,7 +2,6 @@ package extemp;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
@@ -17,7 +16,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * A Utility class FileCreator.
+ * File Creator is responsible for the creation of all files in the program. It will create the
+ * text articles that are downloaded and also modify files based on the success and failur of an
+ * article download.
  */
 public final class FileCreator {
   /**
@@ -58,6 +59,7 @@ public final class FileCreator {
       "The Sydney Morning Herald", "Think Progress", "Time Magazine", "Toronto Star",
       "United Nations University", "Urban Institute", "Wall Street Journal", "Washington Examiner",
       "Washington Post", "Washington Times", "Wilson Center" };
+
   /**
    * HasMap of all sources information and the corresponding news outlet. Not
    * complete for the following Copyright 2017, ecfr, epic, Council on Foreign
@@ -205,17 +207,17 @@ public final class FileCreator {
   }
 
   /**
-   * Private constructor because it is a utility class.
+   * Constructor that currently does nothing.
    */
-  private FileCreator() {
-    // Does nothing
+  public FileCreator() {
+
   }
 
   /**
    * Creates a directory of all the files, an index for the articles, and a
    * current timestamp.
    */
-  public static void createSetup() {
+  public void createSetup() {
     createDirectory();
     createIndex();
     createTimeStamp();
@@ -225,21 +227,21 @@ public final class FileCreator {
    * Creates a folder which will store folders for each news source that will
    * store their corresponding articles.
    */
-  private static void createDirectory() {
-    for (int i = 0; i < sourceNames.length; i++) {
-      new File("articles/" + sourceNames[i]).mkdirs();
+  private void createDirectory() {
+    for (final String sourceName2 : sourceNames) {
+      new File("articles/" + sourceName2).mkdirs();
     }
   }
 
   /**
    * Creates a text file to store a list of urls.
    */
-  private static void createIndex() {
+  private void createIndex() {
     final Path path = Paths.get(baseFolder + "/" + sourceName + ".txt");
     if (!Files.exists(path)) {
       try {
         Files.createFile(path);
-      } catch (IOException e) {
+      } catch (final IOException e) {
         // TODO
       }
     }
@@ -248,7 +250,7 @@ public final class FileCreator {
   /**
    * Creates a text file to store a timestamp.
    */
-  private static void createTimeStamp() {
+  private void createTimeStamp() {
     final String timestamp = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
     final byte[] strToBytes = timestamp.getBytes();
     // new File("timestamp.txt");
@@ -256,13 +258,13 @@ public final class FileCreator {
     if (Files.exists(file)) {
       try {
         Files.write(file, strToBytes);
-      } catch (IOException e) {
+      } catch (final IOException e) {
         // TODO Auto-generated catch block'
       }
     } else {
       try {
         Files.createFile(file);
-      } catch (IOException e) {
+      } catch (final IOException e) {
         // TODO Auto-generated catch block'
       }
     }
@@ -277,7 +279,7 @@ public final class FileCreator {
    *          contains the article title, url, and source.
    * @return true if the file was created, false otherwise
    */
-  public static boolean createFile(final String content, final UrlInfo url) {
+  public boolean createTextArticle(final String content, final UrlInfo url) {
     boolean failure = false;
     if (content != null) {
       final ArrayList<String> lines = new ArrayList<>();
@@ -291,31 +293,79 @@ public final class FileCreator {
 
       if (sourceName == null) {
         sourceName = "";
-        try (FileWriter fileWrite = new FileWriter("articles/noIfElse.txt", true);
+        try (BufferedWriter fileWrite = Files.newBufferedWriter(Paths.get("articles/noIfElse.txt"));
             BufferedWriter buffRead = new BufferedWriter(fileWrite);
             PrintWriter output = new PrintWriter(buffRead)) {
           output.println(urlLink);
-        } catch (IOException e) {
+        } catch (final IOException e) {
           // TODO
         }
       }
+
+      // Add the tile, source to the top of the text file
       headerLines.add(urlTitle);
       headerLines.add(sourceName);
       headerLines.add("");
+
+      // Add the url to the bottom of the text file
       footerLines.add("");
       footerLines.add(urlLink);
+
+      // Create the text file in the appropriate folder
       try {
+        // Add the text information from the url
         lines.add(content);
+
         final Path file = Paths.get(baseFolder + "/" + sourceName + "/"
             + urlTitle.replaceAll("[^a-zA-Z0-9_\\-\\.]", "") + ".txt");
+
         Files.createFile(file);
+
         Files.write(file, headerLines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
         Files.write(file, lines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
         Files.write(file, footerLines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
-      } catch (IOException e) {
+      } catch (final IOException e) {
         failure = true;
       }
     }
     return failure;
+  }
+
+  /**
+   * Adds the article into the list of urls that could not be downloaded.
+   * 
+   * @param url
+   *          the url of the failed article
+   */
+  public void addAsFailure(final String url) {
+    BufferedWriter fileWrite = null;
+    try {
+      fileWrite = Files.newBufferedWriter(Paths.get("articles/failure.txt"));
+    } catch (final IOException event) {
+      // TODO
+    }
+    fileWrite = new BufferedWriter(fileWrite);
+    final PrintWriter out = new PrintWriter(fileWrite);
+    out.println(url);
+    out.close();
+  }
+
+  /**
+   * Adds the article into the list of urls were successfully downloaded.
+   * 
+   * @param url
+   *          the url of the failed article
+   */
+  public void addAsSuccess(final String url) {
+    BufferedWriter fileWrite = null;
+    try {
+      fileWrite = Files.newBufferedWriter(Paths.get(baseFolder + "/" + sourceName + ".txt"));
+    } catch (final IOException event) {
+      // TODO
+    }
+    final BufferedWriter bufferedWrite = new BufferedWriter(fileWrite);
+    final PrintWriter out = new PrintWriter(bufferedWrite);
+    out.println(url);
+    out.close();
   }
 }

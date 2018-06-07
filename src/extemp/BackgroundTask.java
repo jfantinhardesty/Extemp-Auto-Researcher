@@ -6,7 +6,7 @@ import javax.swing.SwingWorker;
 /**
  * Background tasks used with threads.
  */
-class BackgroundTask extends SwingWorker<String, Object> {
+public class BackgroundTask extends SwingWorker<String, Object> {
   /**
    * JTextArea to display information.
    */
@@ -26,6 +26,7 @@ class BackgroundTask extends SwingWorker<String, Object> {
    *          date when articles will be indexed from.
    */
   public BackgroundTask(final JTextArea textArea, final String date) {
+    super();
     this.textArea = textArea;
     this.date = date;
   }

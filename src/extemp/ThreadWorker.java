@@ -1,16 +1,16 @@
 package extemp;
 
-import java.io.IOException;
-import java.net.URL;
-
-import org.xml.sax.SAXException;
-
 import de.l3s.boilerpipe.BoilerpipeProcessingException;
 import de.l3s.boilerpipe.document.TextDocument;
 import de.l3s.boilerpipe.extractors.CommonExtractors;
 import de.l3s.boilerpipe.sax.BoilerpipeSAXInput;
 import de.l3s.boilerpipe.sax.HTMLDocument;
 import de.l3s.boilerpipe.sax.HTMLFetcher;
+
+import java.io.IOException;
+import java.net.URL;
+
+import org.xml.sax.SAXException;
 
 /**
  * Runs the threads.
@@ -38,11 +38,20 @@ public class ThreadWorker implements Runnable {
    *          a urlInfo object containing the title, source and link to the url.
    */
   public ThreadWorker(final UrlInfo url) {
-    this.urlInfo = url;
+    urlInfo = url;
 
     final Thread thread = new Thread(this);
     thread.setDaemon(true);
     thread.start();
+  }
+
+  /**
+   * Returns the url link.
+   * 
+   * @return the url link
+   */
+  public String getUrl() {
+    return urlInfo.getUrl();
   }
 
   /**
@@ -64,18 +73,11 @@ public class ThreadWorker implements Runnable {
   }
 
   /**
-   * Returns the url link.
-   * 
-   * @return the url link
+   * Runs the thread.
    */
-  public String getUrl() {
-    return urlInfo.getUrl();
-  }
-
-  /** Runs the thread. */
   @Override
   public void run() {
-    this.running = true;
+    running = true;
 
     try {
       final URL url = new URL(getUrl());
@@ -83,12 +85,13 @@ public class ThreadWorker implements Runnable {
       final TextDocument doc = new BoilerpipeSAXInput(htmlDoc.toInputSource()).getTextDocument();
       final String content = CommonExtractors.ARTICLE_EXTRACTOR.getText(doc);
       if (!isFailure()) {
-        failure = FileCreator.createFile(content, urlInfo);
+        final FileCreator fileCreator = new FileCreator();
+        failure = fileCreator.createTextArticle(content, urlInfo);
       }
     } catch (IOException | BoilerpipeProcessingException | SAXException e) {
       failure = true;
     }
 
-    this.running = false;
+    running = false;
   }
 }

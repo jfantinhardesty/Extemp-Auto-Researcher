@@ -5,8 +5,6 @@ import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -31,12 +29,9 @@ public class ExtempWindow extends JFrame {
    * Launch the application.
    */
   public static void start() {
-    EventQueue.invokeLater(new Runnable() {
-      /** Run the main program. */
-      public void run() {
-        final ExtempWindow window = new ExtempWindow();
-        window.setVisible(true);
-      }
+    EventQueue.invokeLater(() -> {
+      final ExtempWindow window = new ExtempWindow();
+      window.setVisible(true);
     });
   }
 
@@ -52,7 +47,6 @@ public class ExtempWindow extends JFrame {
    * Initialize the contents of the frame.
    */
   private void initialize() {
-    // this = new JFrame("Extemp Auto Researcher");
     setBounds(100, 100, 779, 465);
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     setVisible(true);
@@ -106,39 +100,17 @@ public class ExtempWindow extends JFrame {
     final JButton btnHelp = new JButton("Help");
     menuBar.add(btnHelp);
 
-    btnPastWeek.addActionListener(new ActionListener() {
-      /** Start indexing articles. */
-      public void actionPerformed(final ActionEvent action) {
-        new BackgroundTask(textArea, "Past Week").execute();
-      }
-    });
+    btnPastWeek.addActionListener(action -> new BackgroundTask(textArea, "Past Week").execute());
 
-    btnPastMonth.addActionListener(new ActionListener() {
-      /** Start indexing articles. */
-      public void actionPerformed(final ActionEvent action) {
-        new BackgroundTask(textArea, "Past Month").execute();
-      }
-    });
+    btnPastMonth.addActionListener(action -> new BackgroundTask(textArea, "Past Month").execute());
 
-    btnPast3Months.addActionListener(new ActionListener() {
-      /** Start indexing articles. */
-      public void actionPerformed(final ActionEvent action) {
-        new BackgroundTask(textArea, "Past 3 Months").execute();
-      }
-    });
+    btnPast3Months
+        .addActionListener(action -> new BackgroundTask(textArea, "Past 3 Months").execute());
 
-    btnPast6Months.addActionListener(new ActionListener() {
-      /** Start indexing articles. */
-      public void actionPerformed(final ActionEvent action) {
-        new BackgroundTask(textArea, "Past 6 Months").execute();
-      }
-    });
+    btnPast6Months
+        .addActionListener(action -> new BackgroundTask(textArea, "Past 6 Months").execute());
 
-    btnSinceIndex.addActionListener(new ActionListener() {
-      /** Start indexing articles. */
-      public void actionPerformed(final ActionEvent action) {
-        new BackgroundTask(textArea, "Since Previous").execute();
-      }
-    });
+    btnSinceIndex
+        .addActionListener(action -> new BackgroundTask(textArea, "Since Previous").execute());
   }
 }
