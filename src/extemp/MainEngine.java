@@ -2,9 +2,12 @@ package extemp;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.JLabel;
@@ -56,27 +59,48 @@ public class MainEngine {
     Map<String, String> login;
     login = login();
 
-    final List<UrlInfo> urlClass = connector.connectDatabase(textArea, login, date);
+    final List<UrlInfo> urlDownloads = connector.connectDatabase(textArea, login, date);
 
     // Create files
     fileCreator.createSetup();
 
-    /*
-     * String urlString; for (final UrlInfo url : urlClass) { urlString = url.url;
-     * for (int j = 0; j < storedUrlList.size(); j++) { if
-     * (urlString.equals(storedUrlList.get(j))) { urlClass.remove(url); } } }
-     */
+    final List<String> storedUrlList = new ArrayList<String>();
+    Scanner inFile;
+    String token;
+    try {
+      inFile = new Scanner(new File("articles/index.txt"));
+      while (inFile.hasNext()) {
+        // find next line
+        token = inFile.next();
+        storedUrlList.add(token);
+      }
+      inFile.close();
+    } catch (FileNotFoundException e) {
+      // TODO
+    }
+
+    // Remove files that have already been downloaded.
+    urlDownloads.removeIf(u -> storedUrlList.contains(u.getUrl()));
 
     final long totalStartTime = System.currentTimeMillis();
 
-    textArea.append(urlClass.size() + " articles to cache\n");
+    textArea.append(urlDownloads.size() + " articles to cache\n");
     textArea.update(textArea.getGraphics());
 
-    threads(urlClass, textArea);
+    threads(urlDownloads, textArea);
 
     final long currentTime = System.currentTimeMillis();
     textArea.append("Completed in " + (currentTime - totalStartTime) / 60000 + "min\n");
     textArea.update(textArea.getGraphics());
+
+    textArea.append("Now starting the indexing process. Please do not close this window.");
+    textArea.update(textArea.getGraphics());
+
+    IndexFiles index = new IndexFiles();
+    index.startIndex();
+    textArea.append("Completed the indexing process. You can now search your files.");
+    textArea.update(textArea.getGraphics());
+
   }
 
   /**

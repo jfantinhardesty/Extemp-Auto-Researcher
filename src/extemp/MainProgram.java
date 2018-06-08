@@ -10,7 +10,7 @@ public final class MainProgram {
    * @param args
    *          Generic arguments for main
    */
-  //public static void main(final String[] args) {
-    //ExtempWindow.start();
-  //}
+  public static void main(final String[] args) {
+    ExtempWindow.start();
+  }
 }

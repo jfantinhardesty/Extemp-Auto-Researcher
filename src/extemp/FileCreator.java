@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,9 +17,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * File Creator is responsible for the creation of all files in the program. It will create the
- * text articles that are downloaded and also modify files based on the success and failur of an
- * article download.
+ * File Creator is responsible for the creation of all files in the program. It
+ * will create the text articles that are downloaded and also modify files based
+ * on the success and failur of an article download.
  */
 public final class FileCreator {
   /**
@@ -359,7 +360,8 @@ public final class FileCreator {
   public void addAsSuccess(final String url) {
     BufferedWriter fileWrite = null;
     try {
-      fileWrite = Files.newBufferedWriter(Paths.get(baseFolder + "/" + sourceName + ".txt"));
+      fileWrite = Files.newBufferedWriter(Paths.get(baseFolder + "/" + sourceName + ".txt"),
+          StandardCharsets.UTF_8, StandardOpenOption.APPEND);
     } catch (final IOException event) {
       // TODO
     }

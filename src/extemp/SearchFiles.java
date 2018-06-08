@@ -34,7 +34,7 @@ public class SearchFiles {
    * @param args
    * @throws Exception
    */
-  public static void main(String[] args) throws Exception {
+  public static void main2(String[] args) throws Exception {
     String index = "index";
     String field = "contents";
     String queries = "articles";

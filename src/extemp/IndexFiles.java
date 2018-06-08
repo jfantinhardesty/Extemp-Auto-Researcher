@@ -34,31 +34,28 @@ import org.apache.lucene.store.FSDirectory;
  * it with no command-line arguments for usage information.
  */
 public class IndexFiles {
+  /**
+   * Folder that stores all of the index information.
+   */
+  private static String indexPath = "index";
+  
+  /**
+   * Folder that stores all of the articles.
+   */
+  private static String docsPath = "articles";
 
   /**
    * Indexes all of the text files that have been downloaded.
    */
-  private IndexFiles() {
+  public IndexFiles() {
     
   }
 
   /**
    * Index all text files under a directory.
-   * 
-   * @param args
-   *          Generic main args
    */
-  public static void main(String[] args) {
-    String indexPath = "index";
-    String docsPath = "articles";
-    boolean create = true;
-
+  public void startIndex() {
     final Path docDir = Paths.get(docsPath);
-    if (!Files.isReadable(docDir)) {
-      System.out.println("Document directory '" + docDir.toAbsolutePath()
-          + "' does not exist or is not readable, please check the path");
-      System.exit(1);
-    }
 
     Date start = new Date();
     try {
@@ -68,14 +65,7 @@ public class IndexFiles {
       Analyzer analyzer = new StandardAnalyzer();
       IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
 
-      if (create) {
-        // Create a new index in the directory, removing any
-        // previously indexed documents:
-        iwc.setOpenMode(OpenMode.CREATE);
-      } else {
-        // Add new documents to an existing index:
-        iwc.setOpenMode(OpenMode.CREATE_OR_APPEND);
-      }
+      iwc.setOpenMode(OpenMode.CREATE_OR_APPEND);
 
       // Optional: for better indexing performance, if you
       // are indexing many documents, increase the RAM
@@ -124,14 +114,14 @@ public class IndexFiles {
    * @throws IOException
    *           If there is a low-level I/O error
    */
-  static void indexDocs(final IndexWriter writer, Path path) throws IOException {
+  private void indexDocs(final IndexWriter writer, Path path) throws IOException {
     if (Files.isDirectory(path)) {
       Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
         @Override
         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
           try {
             indexDoc(writer, file, attrs.lastModifiedTime().toMillis());
-          } catch (IOException ignore) {
+          } catch (IOException e) {
             // don't index files that can't be read.
           }
           return FileVisitResult.CONTINUE;
@@ -154,7 +144,7 @@ public class IndexFiles {
    * @throws IOException
    *           IO error
    */
-  static void indexDoc(IndexWriter writer, Path file, long lastModified) throws IOException {
+  private void indexDoc(IndexWriter writer, Path file, long lastModified) throws IOException {
     try (InputStream stream = Files.newInputStream(file)) {
       // make a new, empty document
       Document doc = new Document();
@@ -176,7 +166,7 @@ public class IndexFiles {
       doc.add(new LongPoint("modified", lastModified));
 
       // Add the contents of the file to a field named "contents". Specify a Reader,
-      // // so that the text of the file is tokenized and indexed, but not stored.
+      // so that the text of the file is tokenized and indexed, but not stored.
       // Note that FileReader expects the file to be in UTF-8 encoding.
       // If that's not the case searching for special characters will fail.
       doc.add(new TextField("contents",
