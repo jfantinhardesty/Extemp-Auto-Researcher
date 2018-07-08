@@ -11,7 +11,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Date;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -57,10 +56,7 @@ public class IndexFiles {
   public void startIndex() {
     final Path docDir = Paths.get(docsPath);
 
-    Date start = new Date();
     try {
-      System.out.println("Indexing to directory '" + indexPath + "'...");
-
       Directory dir = FSDirectory.open(Paths.get(indexPath));
       Analyzer analyzer = new StandardAnalyzer();
       IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
@@ -87,11 +83,8 @@ public class IndexFiles {
 
       writer.close();
 
-      Date end = new Date();
-      System.out.println(end.getTime() - start.getTime() + " total milliseconds");
-
     } catch (IOException e) {
-      System.out.println(" caught a " + e.getClass() + "\n with message: " + e.getMessage());
+      //TODO
     }
   }
 
@@ -174,13 +167,11 @@ public class IndexFiles {
 
       if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
         // New index, so we just add the document (no old document can be there):
-        System.out.println("adding " + file);
         writer.addDocument(doc);
       } else {
         // Existing index (an old copy of this document may have been indexed) so
         // we use updateDocument instead to replace the old one matching the exact
         // path, if present:
-        System.out.println("updating " + file);
         writer.updateDocument(new Term("path", file.toString()), doc);
       }
     }

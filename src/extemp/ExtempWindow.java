@@ -2,15 +2,10 @@ package extemp;
 
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
@@ -24,6 +19,17 @@ public class ExtempWindow extends JFrame {
    * Serial ID.
    */
   private static final long serialVersionUID = 1L;
+
+  /**
+   * Text area that will display information about indexing and downloading of
+   * documents.
+   */
+  private final JTextArea textDownload = new JTextArea();
+
+  /**
+   * The scroll pane.
+   */
+  private final JScrollPane scrollPane = new JScrollPane(textDownload);
 
   /**
    * Launch the application.
@@ -52,14 +58,12 @@ public class ExtempWindow extends JFrame {
     setVisible(true);
     setLayout(new GridBagLayout());
 
-    final JTextArea textArea = new JTextArea();
-    textArea.setWrapStyleWord(true);
-    textArea.setLineWrap(true);
-    textArea.setEditable(false);
+    textDownload.setWrapStyleWord(true);
+    textDownload.setLineWrap(true);
+    textDownload.setEditable(false);
 
     final GridBagConstraints gbc = new GridBagConstraints();
 
-    final JScrollPane scrollPane = new JScrollPane(textArea);
     scrollPane.setViewportBorder(new LineBorder(new Color(0, 0, 0), 2, true));
     gbc.weightx = 1;
     gbc.weighty = 1;
@@ -67,50 +71,7 @@ public class ExtempWindow extends JFrame {
     gbc.anchor = GridBagConstraints.CENTER;
     add(scrollPane, gbc);
 
-    final FlowLayout flowLay = new FlowLayout(FlowLayout.LEFT);
-
-    final JMenuBar menuBar = new JMenuBar();
-    menuBar.setLayout(flowLay);
-    scrollPane.setColumnHeaderView(menuBar);
-
-    final JMenu mnIndexArticles = new JMenu("Index Articles");
-    menuBar.add(mnIndexArticles);
-
-    final JMenuItem btnPastWeek = new JMenuItem("Past Week");
-    mnIndexArticles.add(btnPastWeek);
-
-    final JMenuItem btnPastMonth = new JMenuItem("Past Month");
-    mnIndexArticles.add(btnPastMonth);
-
-    final JMenuItem btnPast3Months = new JMenuItem("Past 3 Months");
-    mnIndexArticles.add(btnPast3Months);
-
-    final JMenuItem btnPast6Months = new JMenuItem("Past 6 Months");
-    mnIndexArticles.add(btnPast6Months);
-
-    final JMenuItem btnSinceIndex = new JMenuItem("Since Previous Index");
-    mnIndexArticles.add(btnSinceIndex);
-
-    final JButton btnSearchArticles = new JButton("Search Articles");
-    menuBar.add(btnSearchArticles);
-
-    final JButton btnSettings = new JButton("Settings");
-    menuBar.add(btnSettings);
-
-    final JButton btnHelp = new JButton("Help");
-    menuBar.add(btnHelp);
-
-    btnPastWeek.addActionListener(action -> new BackgroundTask(textArea, "Past Week").execute());
-
-    btnPastMonth.addActionListener(action -> new BackgroundTask(textArea, "Past Month").execute());
-
-    btnPast3Months
-        .addActionListener(action -> new BackgroundTask(textArea, "Past 3 Months").execute());
-
-    btnPast6Months
-        .addActionListener(action -> new BackgroundTask(textArea, "Past 6 Months").execute());
-
-    btnSinceIndex
-        .addActionListener(action -> new BackgroundTask(textArea, "Since Previous").execute());
+    MenuBar menuBar = new MenuBar(scrollPane, textDownload);
+    add(menuBar);
   }
 }
