@@ -9,8 +9,6 @@ import javax.swing.JButton;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
 /**
  * The MenuBar class displays the menu for the GUI. It is responsible for all
@@ -30,23 +28,16 @@ public class MenuBar extends JMenuBar {
 
   /**
    * Creates a menu bar with an index and search button.
-   * 
-   * @param scrollPane
-   *          Scroll Pane for the window
-   * @param textDownload
-   *          the text area to display index and download information
    */
-  public MenuBar(JScrollPane scrollPane, JTextArea textDownload) {
+  public MenuBar() {
     super();
 
     final FlowLayout flowLay = new FlowLayout(FlowLayout.LEFT);
 
-    final JMenuBar menuBar = new JMenuBar();
-    menuBar.setLayout(flowLay);
-    scrollPane.setColumnHeaderView(menuBar);
+    setLayout(flowLay);
 
     final JButton btnIndexArticles = new JButton("Index Articles");
-    menuBar.add(btnIndexArticles);
+    add(btnIndexArticles);
 
     final JMenuItem btnPastWeek = new JMenuItem("Past Week");
     menu.add(btnPastWeek);
@@ -64,27 +55,27 @@ public class MenuBar extends JMenuBar {
     menu.add(btnSinceIndex);
     
     final JButton btnSettings = new JButton("Settings");
-    menuBar.add(btnSettings);
+    add(btnSettings);
 
     final JButton btnHelp = new JButton("Help");
-    menuBar.add(btnHelp);
+    add(btnHelp);
 
     btnIndexArticles.addActionListener(action -> showPopup(action));
 
     btnPastWeek
-        .addActionListener(action -> new BackgroundTask(textDownload, "Past Week").execute());
+        .addActionListener(action -> new BackgroundTask("Past Week").execute());
 
     btnPastMonth
-        .addActionListener(action -> new BackgroundTask(textDownload, "Past Month").execute());
+        .addActionListener(action -> new BackgroundTask("Past Month").execute());
 
     btnPast3Months
-        .addActionListener(action -> new BackgroundTask(textDownload, "Past 3 Months").execute());
+        .addActionListener(action -> new BackgroundTask("Past 3 Months").execute());
 
     btnPast6Months
-        .addActionListener(action -> new BackgroundTask(textDownload, "Past 6 Months").execute());
+        .addActionListener(action -> new BackgroundTask("Past 6 Months").execute());
 
     btnSinceIndex
-        .addActionListener(action -> new BackgroundTask(textDownload, "Since Previous").execute());
+        .addActionListener(action -> new BackgroundTask("Since Previous").execute());
   }
 
   /**

@@ -1,15 +1,18 @@
 package extemp;
 
-import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.TextField;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.JPanel;
 import javax.swing.WindowConstants;
-import javax.swing.border.LineBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 /**
  * Application window.
@@ -19,17 +22,6 @@ public class ExtempWindow extends JFrame {
    * Serial ID.
    */
   private static final long serialVersionUID = 1L;
-
-  /**
-   * Text area that will display information about indexing and downloading of
-   * documents.
-   */
-  private final JTextArea textDownload = new JTextArea();
-
-  /**
-   * The scroll pane.
-   */
-  private final JScrollPane scrollPane = new JScrollPane(textDownload);
 
   /**
    * Launch the application.
@@ -55,23 +47,38 @@ public class ExtempWindow extends JFrame {
   private void initialize() {
     setBounds(100, 100, 779, 465);
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    setVisible(true);
     setLayout(new GridBagLayout());
 
-    textDownload.setWrapStyleWord(true);
-    textDownload.setLineWrap(true);
-    textDownload.setEditable(false);
+    GridBagConstraints gbc = new GridBagConstraints();
 
-    final GridBagConstraints gbc = new GridBagConstraints();
+    MenuBar menuBar = new MenuBar();
+    menuBar.setVisible(true);
 
-    scrollPane.setViewportBorder(new LineBorder(new Color(0, 0, 0), 2, true));
+    gbc.weightx = 0;
+    gbc.weighty = 0;
+    gbc.gridy = 1;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.anchor = GridBagConstraints.NORTH;
+    add(menuBar, gbc);
+
+    JPanel searchBox = new JPanel();
+    searchBox.setLayout(new FlowLayout());
+    searchBox.setMinimumSize(new Dimension(400,40));
+
+    TextField searchText = new TextField();
+    searchText.setPreferredSize(new Dimension(300, 20));
+    searchBox.add(searchText);
+
+    JButton searchBtn = new JButton("Search");
+    searchBox.add(searchBtn);
+
     gbc.weightx = 1;
     gbc.weighty = 1;
-    gbc.fill = GridBagConstraints.BOTH;
-    gbc.anchor = GridBagConstraints.CENTER;
-    add(scrollPane, gbc);
+    gbc.gridy = 2;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.anchor = GridBagConstraints.NORTH;
 
-    MenuBar menuBar = new MenuBar(scrollPane, textDownload);
-    add(menuBar);
+    searchBox.setBorder(new TitledBorder(new EtchedBorder(), "Search"));
+    add(searchBox, gbc);
   }
 }
