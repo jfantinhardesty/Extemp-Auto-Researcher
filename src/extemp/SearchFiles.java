@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -21,27 +20,33 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 
-/** Simple command-line based search demo. */
+/**
+ * Responsible for searching the index and getting the search results to add to
+ * the java table.
+ */
 public class SearchFiles {
 
   /**
-   * 
+   * Constructor does nothing.
    */
-  private SearchFiles() {
+  public SearchFiles() {
+    
   }
 
   /**
-   * Simple command-line based search demo.
+   * Searches the index based on the string that the user types in.
    * 
-   * @param args
+   * @param queryString
+   *          String that will be searched for
    * @throws Exception
+   *           Generic Exception
    */
   public static void search(String queryString) throws Exception {
     String index = "index";
     String field = "contents";
-    //String queries = "articles";
+    // String queries = "articles";
     int repeat = 5;
-    //boolean raw = false;
+    // boolean raw = false;
     int hitsPerPage = 10000;
 
     IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(index)));
@@ -81,32 +86,30 @@ public class SearchFiles {
   }
 
   /**
-   * This demonstrates a typical paging search scenario, where the search engine
-   * presents pages of size n to the user. The user can then go to the next page
-   * if interested in the next hits.
-   * 
-   * <p>When the query is executed for the first time, then only enough results are
-   * collected to fill 5 result pages. If the user wants to page beyond this
-   * limit, then the query is executed another time and all hits are collected.
+   * Searches the index and finds up to 10,000 hits.
    * 
    * @param in
+   *          Buffered Reader
    * @param searcher
+   *          Index Searcher
    * @param query
-   * @param hitsPerPage
+   *          Query
+   * @param maxHits
+   *          Maximum number of hits to show
    * @throws IOException
+   *           IOException
    * 
    */
   public static void doPagingSearch(BufferedReader in, IndexSearcher searcher, Query query,
-      int hitsPerPage) throws IOException {
+      int maxHits) throws IOException {
 
-    // Collect enough docs to show 5 pages
-    TopDocs results = searcher.search(query, 5 * hitsPerPage);
+    TopDocs results = searcher.search(query, maxHits);
     ScoreDoc[] hits = results.scoreDocs;
 
     int numTotalHits = Math.toIntExact(results.totalHits);
 
     int start = 0;
-    int end = Math.min(numTotalHits, 10000);
+    int end = Math.min(numTotalHits, maxHits);
 
     List<List<Object>> tableData = new ArrayList<List<Object>>();
 

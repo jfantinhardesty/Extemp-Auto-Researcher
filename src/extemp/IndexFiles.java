@@ -16,7 +16,6 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.IndexWriter;
@@ -27,27 +26,25 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
 /**
- * Index all text files under a directory.
- * 
- * <p>This is a command-line application demonstrating simple Lucene indexing. Run
- * it with no command-line arguments for usage information.
+ * Index all text files under a directory. This will allow for fast searching
+ * from the user.
  */
 public class IndexFiles {
   /**
    * Folder that stores all of the index information.
    */
   private static String indexPath = "index";
-  
+
   /**
    * Folder that stores all of the articles.
    */
   private static String docsPath = "articles";
 
   /**
-   * Indexes all of the text files that have been downloaded.
+   * Constructor does nothing.
    */
   public IndexFiles() {
-    
+
   }
 
   /**
@@ -63,12 +60,8 @@ public class IndexFiles {
 
       iwc.setOpenMode(OpenMode.CREATE_OR_APPEND);
 
-      // Optional: for better indexing performance, if you
-      // are indexing many documents, increase the RAM
-      // buffer. But if you do this, increase the max heap
-      // size to the JVM (eg add -Xmx512m or -Xmx1g):
-      //
-      // iwc.setRAMBufferSizeMB(256.0);
+      // Increase ram for better indexing performance
+      iwc.setRAMBufferSizeMB(256.0);
 
       IndexWriter writer = new IndexWriter(dir, iwc);
       indexDocs(writer, docDir);
@@ -84,20 +77,13 @@ public class IndexFiles {
       writer.close();
 
     } catch (IOException e) {
-      //TODO
+      // TODO
     }
   }
 
   /**
    * Indexes the given file using the given writer, or if a directory is given,
    * recurses over files and directories found under the given directory.
-   * 
-   * <p>NOTE: This method indexes one document per input file. This is slow. For good
-   * throughput, put multiple documents into your input file(s). An example of
-   * this is in the benchmark module, which can create "line doc" files, one
-   * document per line, using the <a href= "../../../../../
-   * contrib-benchmark/org/apache/lucene/benchmark/byTask/tasks/WriteLineDocTask.html"
-   * >WriteLineDocTask</a>.
    * 
    * @param writer
    *          Writer to the index where the given file/dir info will be stored
@@ -113,7 +99,7 @@ public class IndexFiles {
         @Override
         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
           try {
-            indexDoc(writer, file, attrs.lastModifiedTime().toMillis());
+            indexDoc(writer, file);
           } catch (IOException e) {
             // don't index files that can't be read.
           }
@@ -121,7 +107,7 @@ public class IndexFiles {
         }
       });
     } else {
-      indexDoc(writer, path, Files.getLastModifiedTime(path).toMillis());
+      indexDoc(writer, path);
     }
   }
 
@@ -132,46 +118,27 @@ public class IndexFiles {
    *          The writer
    * @param file
    *          The file
-   * @param lastModified
-   *          When the file was last modified
    * @throws IOException
    *           IO error
    */
-  private void indexDoc(IndexWriter writer, Path file, long lastModified) throws IOException {
+  private void indexDoc(IndexWriter writer, Path file) throws IOException {
     try (InputStream stream = Files.newInputStream(file)) {
-      // make a new, empty document
+      // Create a new document
       Document doc = new Document();
 
-      // Add the path of the file as a field named "path". Use a
-      // field that is indexed (i.e. searchable), but don't tokenize
-      // the field into separate words and don't index term frequency
-      // or positional information:
+      // Add the file path to the document.
       Field pathField = new StringField("path", file.toString(), Field.Store.YES);
       doc.add(pathField);
 
-      // Add the last modified date of the file a field named "modified".
-      // Use a LongPoint that is indexed (i.e. efficiently filterable with
-      // PointRangeQuery). This indexes to milli-second resolution, which
-      // is often too fine. You could instead create a number based on
-      // year/month/day/hour/minutes/seconds, down the resolution you require.
-      // For example the long value 2011021714 would mean
-      // February 17, 2011, 2-3 PM.
-      doc.add(new LongPoint("modified", lastModified));
-
-      // Add the contents of the file to a field named "contents". Specify a Reader,
-      // so that the text of the file is tokenized and indexed, but not stored.
-      // Note that FileReader expects the file to be in UTF-8 encoding.
-      // If that's not the case searching for special characters will fail.
+      // Add the contents of the file to a field named "contents".
       doc.add(new TextField("contents",
           new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))));
 
       if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
-        // New index, so we just add the document (no old document can be there):
+        // New index, so we just add the document since no other documents there
         writer.addDocument(doc);
       } else {
-        // Existing index (an old copy of this document may have been indexed) so
-        // we use updateDocument instead to replace the old one matching the exact
-        // path, if present:
+        // Existing index so we update the document
         writer.updateDocument(new Term("path", file.toString()), doc);
       }
     }
