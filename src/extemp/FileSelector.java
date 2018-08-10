@@ -24,7 +24,7 @@ public class FileSelector {
   private static JTable myTable;
 
   private static TableModel dataModel;
-  
+
   private static JScrollPane tableScrollPane;
 
   private static List<List<Object>> tableData;
@@ -32,27 +32,28 @@ public class FileSelector {
   /**
    * Creates new form JTable_Files_Name
    */
-  public FileSelector(List<List<Object>> tableData) {
+  public FileSelector() {
     myTable = new JTable();
-    this.tableData = tableData;
+    tableData = new ArrayList<List<Object>>();
     initComponents();
   }
 
-  /*
+  /**
    * 
    */
   private void initComponents() {
 
     setTableModel();
 
-    myTable.getColumnModel().getColumn(4).setMaxWidth(0);
-    myTable.getColumnModel().getColumn(4).setMinWidth(0);
-    myTable.getColumnModel().getColumn(4).setPreferredWidth(0);
+    myTable.getColumnModel().getColumn(0).setPreferredWidth(0);
+    myTable.getColumnModel().getColumn(1).setPreferredWidth(0);
+    myTable.getColumnModel().getColumn(2).setPreferredWidth(0);
+    myTable.getColumnModel().getColumn(3).setPreferredWidth(0);
     myTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
     tableScrollPane = new JScrollPane(myTable);
-    tableScrollPane.setMaximumSize(new Dimension(1200, 1200));
-    tableScrollPane.setSize(new Dimension(1200, 1200));
+    tableScrollPane.setPreferredSize(new Dimension(600, 150));
+    tableScrollPane.setMinimumSize(new Dimension(600, 150));
     myTable.setAutoCreateRowSorter(true);
     myTable.setShowGrid(true);
     myTable.setColumnSelectionAllowed(true);
@@ -60,7 +61,7 @@ public class FileSelector {
 
   private void setTableModel() {
     final List<Object> columnNames = new ArrayList<Object>(
-        Arrays.asList("Number ", "Path", "Title", "Score", ""));
+        Arrays.asList("Number ", "Path", "Title", "Score"));
 
     dataModel = new AbstractTableModel() {
       /**
@@ -81,7 +82,22 @@ public class FileSelector {
       }
 
       public String getColumnName(int column) {
-        return (String)columnNames.get(column);
+        return (String) columnNames.get(column);
+      }
+
+      public Class<?> getColumnClass(int column) {
+        switch (column) {
+        case 0:
+          return Integer.class;
+        case 1:
+          return String.class;
+        case 2:
+          return String.class;
+        case 3:
+          return Double.class;
+        default:
+          return null;
+        }
       }
     };
 

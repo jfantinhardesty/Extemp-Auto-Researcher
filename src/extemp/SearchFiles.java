@@ -39,9 +39,9 @@ public class SearchFiles {
   public static void search(String queryString) throws Exception {
     String index = "index";
     String field = "contents";
-    String queries = "articles";
+    //String queries = "articles";
     int repeat = 5;
-    boolean raw = false;
+    //boolean raw = false;
     int hitsPerPage = 10000;
 
     IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(index)));
@@ -65,15 +65,13 @@ public class SearchFiles {
 
       Query query = parser.parse(line);
 
-      if (repeat > 0) { // repeat & time as benchmark
-        Date start = new Date();
+      if (repeat > 0) {
         for (int i = 0; i < repeat; i++) {
           searcher.search(query, 100);
         }
-        Date end = new Date();
       }
 
-      doPagingSearch(in, searcher, query, hitsPerPage, raw, queries == null && queryString == null);
+      doPagingSearch(in, searcher, query, hitsPerPage);
 
       if (queryString != null) {
         break;
@@ -87,8 +85,7 @@ public class SearchFiles {
    * presents pages of size n to the user. The user can then go to the next page
    * if interested in the next hits.
    * 
-   * <p>
-   * When the query is executed for the first time, then only enough results are
+   * <p>When the query is executed for the first time, then only enough results are
    * collected to fill 5 result pages. If the user wants to page beyond this
    * limit, then the query is executed another time and all hits are collected.
    * 
@@ -96,20 +93,17 @@ public class SearchFiles {
    * @param searcher
    * @param query
    * @param hitsPerPage
-   * @param raw
-   * @param interactive
    * @throws IOException
    * 
    */
   public static void doPagingSearch(BufferedReader in, IndexSearcher searcher, Query query,
-      int hitsPerPage, boolean raw, boolean interactive) throws IOException {
+      int hitsPerPage) throws IOException {
 
     // Collect enough docs to show 5 pages
     TopDocs results = searcher.search(query, 5 * hitsPerPage);
     ScoreDoc[] hits = results.scoreDocs;
 
     int numTotalHits = Math.toIntExact(results.totalHits);
-    // System.out.println(numTotalHits + " total matching documents");
 
     int start = 0;
     int end = Math.min(numTotalHits, 10000);
@@ -118,18 +112,12 @@ public class SearchFiles {
 
     for (int i = start; i < end; i++) {
       List<Object> rowResult = new ArrayList<Object>();
-      if (raw) { // output raw format
-        // System.out.println("doc=" + hits[i].doc + " score=" + hits[i].score);
-        continue;
-      }
 
       Document doc = searcher.doc(hits[i].doc);
       String path = doc.get("path");
       if (path != null) {
-        // System.out.println((i + 1) + ". " + path);
         String title = doc.get("title");
-        if (title != null) {
-          // System.out.println(" Title: " + doc.get("title"));
+        if (title == null) {
           title = "1";
         }
 
@@ -140,8 +128,6 @@ public class SearchFiles {
 
         tableData.add(rowResult);
 
-      } else {
-        // System.out.println((i + 1) + ". " + "No path for this document");
       }
     }
 

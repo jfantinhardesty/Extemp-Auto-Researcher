@@ -1,5 +1,6 @@
 package extemp;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
@@ -9,14 +10,11 @@ import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.WindowConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -52,68 +50,68 @@ public class ExtempWindow extends JFrame {
    * Initialize the contents of the frame.
    */
   private void initialize() {
-    setBounds(100, 100, 779, 465);
+    setBounds(100, 100, 800, 800);
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    setLayout(new GridBagLayout());
+
+    GridBagLayout gbl = new GridBagLayout();
+    gbl.columnWidths = new int[] { 0, 0, 0, 0 };
+    gbl.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+    gbl.columnWeights = new double[] { 0.0, 0.0, 0, Double.MIN_VALUE };
+    gbl.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+        Double.MIN_VALUE };
+    setLayout(gbl);
+
+    MenuBar menuBar = new MenuBar();
 
     GridBagConstraints gbc = new GridBagConstraints();
 
-    MenuBar menuBar = new MenuBar();
-    menuBar.setVisible(true);
-
-    gbc.weightx = 0;
-    gbc.weighty = 0;
-    gbc.gridy = 1;
+    gbc.weightx = .5;
+    gbc.gridx = 0;
+    gbc.gridy = 0;
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.anchor = GridBagConstraints.NORTH;
     add(menuBar, gbc);
 
     JPanel searchBox = new JPanel();
-    searchBox.setLayout(new FlowLayout());
-    searchBox.setMinimumSize(new Dimension(400, 40));
+    //searchBox.setLayout(new FlowLayout());
+    searchBox.setPreferredSize(new Dimension(400, 32));
+    searchBox.setMinimumSize(new Dimension(400, 32));
 
     TextField searchText = new TextField();
     searchText.setPreferredSize(new Dimension(300, 20));
+    searchText.setMinimumSize(new Dimension(300, 20));
     searchBox.add(searchText);
 
     JButton searchBtn = new JButton("Search");
-    searchBtn.addActionListener(new ActionListener() { 
-      public void actionPerformed(ActionEvent e) { 
+    searchBtn.setPreferredSize(new Dimension(80, 20));
+    searchBtn.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
         try {
           SearchFiles.search(searchText.getText());
         } catch (Exception event) {
           // TODO Auto-generated catch block
           event.printStackTrace();
         }
-      } 
-    } );
+      }
+    });
     searchBox.add(searchBtn);
 
-    gbc.weightx = 1;
-    gbc.weighty = 1;
+    gbc.weightx = .5;
+    gbc.gridy = 1;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.anchor = GridBagConstraints.NORTH;
+
+    searchBox.setBorder(new TitledBorder(new EtchedBorder()));
+    add(searchBox, gbc);
+
+    gbc.weightx = .5;
     gbc.gridy = 2;
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.anchor = GridBagConstraints.NORTH;
 
-    searchBox.setBorder(new TitledBorder(new EtchedBorder(), "Search"));
-    add(searchBox, gbc);
-
-    gbc.weightx = 2;
-    gbc.weighty = 2;
-    gbc.gridy = 3;
-    gbc.fill = GridBagConstraints.NONE;
-    gbc.anchor = GridBagConstraints.NORTH;
-
-    final List<List<Object>> tableData = new ArrayList<List<Object>>();
-    tableData.add(new ArrayList<Object>(
-        Arrays.asList("1", "test1.txt", "C://test1.txt", "C:/Test/test1.txt")));
-    tableData.add(new ArrayList<Object>(
-        Arrays.asList("2", "test2.txt", "C://test2.txt", "C:/Test/test2.txt")));
-    tableData.add(new ArrayList<Object>(
-        Arrays.asList("3", "test2.txt", "C://test3.txt", "C:/Test/test3.txt")));
-
-    FileSelector fileSelector = new FileSelector(tableData);
+    FileSelector fileSelector = new FileSelector();
     add(fileSelector.getTable(), gbc);
     pack();
+    revalidate();
   }
 }

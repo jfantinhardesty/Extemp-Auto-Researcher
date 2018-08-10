@@ -1,7 +1,9 @@
 package extemp;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 
@@ -31,12 +33,16 @@ public class MenuBar extends JMenuBar {
    */
   public MenuBar() {
     super();
+    setPreferredSize(new Dimension(100, 20));
+    setMinimumSize(new Dimension(100, 20));
 
     final FlowLayout flowLay = new FlowLayout(FlowLayout.LEFT);
 
     setLayout(flowLay);
 
     final JButton btnIndexArticles = new JButton("Index Articles");
+    btnIndexArticles.setPreferredSize(new Dimension(120, 13));
+    btnIndexArticles.setFont(new Font("Dialog", Font.BOLD, 10));
     add(btnIndexArticles);
 
     final JMenuItem btnPastWeek = new JMenuItem("Past Week");
@@ -53,29 +59,28 @@ public class MenuBar extends JMenuBar {
 
     final JMenuItem btnSinceIndex = new JMenuItem("Since Previous Index");
     menu.add(btnSinceIndex);
-    
+
     final JButton btnSettings = new JButton("Settings");
+    btnSettings.setPreferredSize(new Dimension(100, 13));
+    btnSettings.setFont(new Font("Dialog", Font.BOLD, 10));
     add(btnSettings);
 
     final JButton btnHelp = new JButton("Help");
+    btnHelp.setPreferredSize(new Dimension(100, 13));
+    btnHelp.setFont(new Font("Dialog", Font.BOLD, 10));
     add(btnHelp);
 
     btnIndexArticles.addActionListener(action -> showPopup(action));
 
-    btnPastWeek
-        .addActionListener(action -> new BackgroundTask("Past Week").execute());
+    btnPastWeek.addActionListener(action -> new BackgroundTask("Past Week").execute());
 
-    btnPastMonth
-        .addActionListener(action -> new BackgroundTask("Past Month").execute());
+    btnPastMonth.addActionListener(action -> new BackgroundTask("Past Month").execute());
 
-    btnPast3Months
-        .addActionListener(action -> new BackgroundTask("Past 3 Months").execute());
+    btnPast3Months.addActionListener(action -> new BackgroundTask("Past 3 Months").execute());
 
-    btnPast6Months
-        .addActionListener(action -> new BackgroundTask("Past 6 Months").execute());
+    btnPast6Months.addActionListener(action -> new BackgroundTask("Past 6 Months").execute());
 
-    btnSinceIndex
-        .addActionListener(action -> new BackgroundTask("Since Previous").execute());
+    btnSinceIndex.addActionListener(action -> new BackgroundTask("Since Previous").execute());
   }
 
   /**
