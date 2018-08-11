@@ -96,11 +96,11 @@ public class DatabaseConnector {
 
       // Return the url, title and source from the database for each article
       try (ResultSet result1 = statement1
-          .executeQuery("SELECT url, title, " + "source FROM `my_posts` " + "WHERE date > " + "'"
-              + timestamp + "'" + "ORDER BY `my_posts`.`date` DESC")) {
+          .executeQuery("SELECT url, title, date, " + "source FROM `my_posts` " + "WHERE date > "
+              + "'" + timestamp + "'" + "ORDER BY `my_posts`.`date` DESC")) {
         while (result1.next()) {
           urlClass.add(new UrlInfo(result1.getString("url"), result1.getString("title"),
-              result1.getString("source")));
+              result1.getString("source"), result1.getString("date")));
         }
         textArea.append("\nConnection is closed.");
         textArea.update(textArea.getGraphics());

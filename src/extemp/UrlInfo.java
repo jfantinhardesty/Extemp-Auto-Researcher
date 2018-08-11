@@ -20,6 +20,11 @@ public class UrlInfo {
   private final String title;
 
   /**
+   * A string that stores the date of the article.
+   */
+  private final String date;
+
+  /**
    * Create a UrlInfo object which holds the url, title, and source of an article.
    * 
    * @param url
@@ -28,11 +33,14 @@ public class UrlInfo {
    *          string containing the title of the article.
    * @param source
    *          string containing the source name.
+   * @param date
+   *          string containing the date of the article.
    */
-  public UrlInfo(final String url, final String title, final String source) {
+  public UrlInfo(final String url, final String title, final String source, final String date) {
     this.url = url;
     this.title = title;
     this.source = source;
+    this.date = date;
   }
 
   /**
@@ -60,5 +68,14 @@ public class UrlInfo {
    */
   public String getTitle() {
     return title;
+  }
+
+  /**
+   * Returns the date.
+   * 
+   * @return the date of the article
+   */
+  public String getDate() {
+    return date;
   }
 }

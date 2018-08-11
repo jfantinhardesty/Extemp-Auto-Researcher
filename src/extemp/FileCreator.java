@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * File Creator is responsible for the creation of all files in the program. It
  * will create the text articles that are downloaded and also modify files based
- * on the success and failur of an article download.
+ * on the success and failure of an article download.
  */
 public final class FileCreator {
   /**
@@ -289,14 +289,14 @@ public final class FileCreator {
       String sourceName;
       final String urlLink = url.getUrl();
       final String urlTitle = url.getTitle();
+      final String urlDate = url.getDate();
 
       sourceName = SOURCEMAP.get(url.getSource());
 
       if (sourceName == null) {
         sourceName = "";
         try (BufferedWriter fileWrite = Files.newBufferedWriter(Paths.get("articles/noIfElse.txt"));
-            BufferedWriter buffRead = new BufferedWriter(fileWrite);
-            PrintWriter output = new PrintWriter(buffRead)) {
+            PrintWriter output = new PrintWriter(fileWrite)) {
           output.println(urlLink);
         } catch (final IOException e) {
           // TODO
@@ -306,6 +306,7 @@ public final class FileCreator {
       // Add the tile, source to the top of the text file
       headerLines.add(urlTitle);
       headerLines.add(sourceName);
+      headerLines.add(urlDate);
       headerLines.add("");
 
       // Add the url to the bottom of the text file
@@ -345,7 +346,6 @@ public final class FileCreator {
     } catch (final IOException event) {
       // TODO
     }
-    fileWrite = new BufferedWriter(fileWrite);
     final PrintWriter out = new PrintWriter(fileWrite);
     out.println(url);
     out.close();
@@ -365,8 +365,7 @@ public final class FileCreator {
     } catch (final IOException event) {
       // TODO
     }
-    final BufferedWriter bufferedWrite = new BufferedWriter(fileWrite);
-    final PrintWriter out = new PrintWriter(bufferedWrite);
+    final PrintWriter out = new PrintWriter(fileWrite);
     out.println(url);
     out.close();
   }

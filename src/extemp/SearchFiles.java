@@ -134,6 +134,7 @@ public class SearchFiles {
       }
     }
 
+    // Display the results in the table for the user.
     FileSelector.updateData(tableData);
   }
 }

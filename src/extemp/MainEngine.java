@@ -148,11 +148,12 @@ public class MainEngine {
     int failureCount = 0;
     final FileCreator fileCreator = new FileCreator();
 
-    for (int j = 0; j < articleAmount - threadAmount; j += threadAmount) {
+    for (int j = 0; j < articleAmount; j += threadAmount) {
       final List<ThreadWorker> workers = new ArrayList<>();
       startTime = System.currentTimeMillis();
-      for (int i = 0; i < threadAmount; i++) {
+      for (int i = 0; i < threadAmount && j + i < articleAmount; i++) {
         workers.add(new ThreadWorker(urlClass.get(j + i)));
+        count++;
       }
 
       // We must force the main thread to wait for all the workers
@@ -178,8 +179,6 @@ public class MainEngine {
           fileCreator.addAsSuccess(worker.getUrl());
         }
       }
-
-      count += threadAmount;
       currentTime = System.currentTimeMillis();
       textArea
           .append(count - failureCount + "/" + articleAmount + " completed: " + "Response time of "
